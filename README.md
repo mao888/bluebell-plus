@@ -39,7 +39,7 @@
 
 ## 项目预览图
 
-![image-20200920091536683](D:\桌面\image-20200920091536683.png)
+[![bCORoR.png](https://s4.ax1x.com/2022/02/23/bCORoR.png)](https://imgtu.com/i/bCORoR)
 
 ## 项目全套笔记
 
