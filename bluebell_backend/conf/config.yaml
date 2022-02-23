@@ -1,0 +1,32 @@
+name: "bluebell"
+mode: "dev"
+port: 8081
+version: "v0.0.1"
+start_time: "2022-02-09"
+machine_id: 1
+
+auth:
+  jwt_expire: 8760
+
+log:
+  level: "debug"
+  filename: "./log/bluebell.log"
+  max_size: 1000
+  max_age: 3600
+  max_backups: 5
+
+mysql:
+  host: "127.0.0.1"
+  port: 3306
+  user: "root"
+  password: "10428376"
+  dbname: "bluebell"
+  max_open_conns: 200
+  max_idle_conns: 50
+
+redis:
+  host: "127.0.0.1"
+  port: 6379
+  password: ""
+  db: 0
+  pool_size: 100
