@@ -39,9 +39,9 @@ func SetupRouter(mode string) *gin.Engine {
 
 	v1 := r.Group("/api/v1")
 	// 注册登陆业务
-	v1.POST("/login", controller.LoginHandler)   // 登陆业务
-	v1.POST("/signup", controller.SignUpHandler) // 注册业务
-	v1.GET("/refresh_token", controller.RefreshTokenHandler)
+	v1.POST("/login", controller.LoginHandler)               // 登陆业务
+	v1.POST("/signup", controller.SignUpHandler)             // 注册业务
+	v1.GET("/refresh_token", controller.RefreshTokenHandler) // 刷新accessToken
 
 	v1.GET("/posts", controller.PostListHandler)      // 分页展示帖子列表
 	v1.GET("/posts2", controller.PostList2Handler)    // 根据时间或者分数排序分页展示帖子列表
