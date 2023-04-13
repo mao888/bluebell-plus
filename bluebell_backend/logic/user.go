@@ -32,11 +32,7 @@ func SignUp(p *models.RegisterForm) (error error) {
 	return mysql.InsertUser(u)
 }
 
-/**
- * @Author huchao
- * @Description //TODO 存放登录业务逻辑代码
- * @Date 21:52 2022/2/10
- **/
+// Login 登录业务逻辑代码
 func Login(p *models.LoginForm) (user *models.User, error error) {
 	user = &models.User{
 		UserName: p.UserName,
@@ -47,11 +43,11 @@ func Login(p *models.LoginForm) (user *models.User, error error) {
 	}
 	// 生成JWT
 	//return jwt.GenToken(user.UserID,user.UserName)
-	atoken, rtoken, err := jwt.GenToken(user.UserID, user.UserName)
+	accessToken, refreshToken, err := jwt.GenToken(user.UserID, user.UserName)
 	if err != nil {
 		return
 	}
-	user.AccessToken = atoken
-	user.RefreshToken = rtoken
+	user.AccessToken = accessToken
+	user.RefreshToken = refreshToken
 	return
 }

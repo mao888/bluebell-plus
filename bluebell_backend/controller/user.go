@@ -5,7 +5,6 @@ import (
 	"bluebell_backend/logic"
 	"bluebell_backend/models"
 	"bluebell_backend/pkg/jwt"
-	"errors"
 	"fmt"
 	"github.com/go-playground/validator/v10"
 	"net/http"
@@ -50,25 +49,9 @@ func SignUpHandler(c *gin.Context) {
 	ResponseSuccess(c, nil)
 }
 
-/**
- * @Author huchao
- * @Description //TODO 登录业务
- * @Date 21:49 2022/2/10
- **/
 // LoginHandler 登录业务
-// @Summary 登录业务
-// @Description 登录业务
-// @Tags 用户业务接口
-// @Accept application/json
-// @Produce application/json
-// @Param Authorization header string false "Bearer 用户令牌"
-// @Param object query models.LoginForm false "查询参数"
-// @Security ApiKeyAuth
-// @Success 200 {object} _ResponsePostList
-// @Router /login [POST]
 func LoginHandler(c *gin.Context) {
 	// 1、获取请求参数及参数校验
-	//var u *models.User
 	var u *models.LoginForm
 	if err := c.ShouldBindJSON(&u); err != nil {
 		// 请求参数有误，直接返回响应
@@ -84,11 +67,12 @@ func LoginHandler(c *gin.Context) {
 		ResponseErrorWithMsg(c, CodeInvalidParams, removeTopStruct(errs.Translate(trans)))
 		return
 	}
+
 	// 2、业务逻辑处理——登录
 	user, err := logic.Login(u)
 	if err != nil {
 		zap.L().Error("logic.Login failed", zap.String("username", u.UserName), zap.Error(err))
-		if errors.Is(err, mysql.ErrorUserNotExit) {
+		if err.Error() == mysql.ErrorUserNotExit {
 			ResponseError(c, CodeUserNotExist)
 			return
 		}

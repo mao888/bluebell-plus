@@ -68,29 +68,25 @@ func Register(user *models.User) (err error) {
 	return
 }
 
-/**
- * @Author huchao
- * @Description //TODO 登录业务
- * @Date 21:52 2022/2/10
- **/
+// Login 登录业务
 func Login(user *models.User) (err error) {
 	originPassword := user.Password // 记录一下原始密码(用户登录的密码)
 	sqlStr := "select user_id, username, password from user where username = ?"
 	err = db.Get(user, sqlStr, user.UserName)
+	// 查询数据库出错
 	if err != nil && err != sql.ErrNoRows {
-		// 查询数据库出错
-		return
+		return err
 	}
+	// 用户不存在
 	if err == sql.ErrNoRows {
-		// 用户不存在
-		return ErrorUserNotExit
+		return errors.New(ErrorUserNotExit)
 	}
 	// 生成加密密码与查询到的密码比较
 	password := encryptPassword([]byte(originPassword))
 	if user.Password != password {
-		return ErrorPasswordWrong
+		return errors.New(ErrorPasswordWrong)
 	}
-	return
+	return nil
 }
 
 /**

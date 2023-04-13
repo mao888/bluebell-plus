@@ -45,11 +45,7 @@ type RegisterForm struct {
 	ConfirmPassword string `json:"confirm_password" binding:"required,eqfield=Password"`
 }
 
-/**
- * @Author huchao
- * @Description //TODO 登录请求参数
- * @Date 22:09 2022/2/10
- **/
+// LoginForm 登录请求参数
 type LoginForm struct {
 	UserName string `json:"username" binding:"required"`
 	Password string `json:"password" binding:"required"`
