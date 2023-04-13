@@ -4,17 +4,18 @@ import (
 	"encoding/json"
 	"errors"
 )
+
 /**
  * @Author huchao
  * @Description //TODO 定义请求参数结构体
  * @Date 22:09 2022/2/10
  **/
 type User struct {
-	UserID   uint64 `json:"user_id,string" db:"user_id"` // 指定json序列化/反序列化时使用小写user_id
-	UserName string `json:"username" db:"username"`
-	Password string `json:"password" db:"password"`
-	AccessToken    string
-	RefreshToken   string
+	UserID       uint64 `json:"user_id,string" db:"user_id"` // 指定json序列化/反序列化时使用小写user_id
+	UserName     string `json:"username" db:"username"`
+	Password     string `json:"password" db:"password"`
+	AccessToken  string
+	RefreshToken string
 }
 
 // UnmarshalJSON 为User类型实现自定义的UnmarshalJSON方法
@@ -37,11 +38,7 @@ func (u *User) UnmarshalJSON(data []byte) (err error) {
 	return
 }
 
-/**
- * @Author huchao
- * @Description //TODO 注册请求参数
- * @Date 22:09 2022/2/10
- **/
+// RegisterForm 注册请求参数
 type RegisterForm struct {
 	UserName        string `json:"username" binding:"required"`
 	Password        string `json:"password" binding:"required"`
@@ -54,8 +51,8 @@ type RegisterForm struct {
  * @Date 22:09 2022/2/10
  **/
 type LoginForm struct {
-	UserName        string `json:"username" binding:"required"`
-	Password        string `json:"password" binding:"required"`
+	UserName string `json:"username" binding:"required"`
+	Password string `json:"password" binding:"required"`
 }
 
 // UnmarshalJSON 为RegisterForm类型实现自定义的UnmarshalJSON方法
@@ -89,14 +86,15 @@ func (r *RegisterForm) UnmarshalJSON(data []byte) (err error) {
  **/
 type VoteDataForm struct {
 	//UserID int 从请求中获取当前的用户
-	PostID    string  `json:"post_id" binding:"required"`	 // 帖子id
-	Direction int8     `json:"direction,string" binding:"oneof=1 0 -1"`  // 赞成票(1)还是反对票(-1)取消投票(0)
+	PostID    string `json:"post_id" binding:"required"`              // 帖子id
+	Direction int8   `json:"direction,string" binding:"oneof=1 0 -1"` // 赞成票(1)还是反对票(-1)取消投票(0)
 }
+
 // UnmarshalJSON 为VoteDataForm类型实现自定义的UnmarshalJSON方法
 func (v *VoteDataForm) UnmarshalJSON(data []byte) (err error) {
 	required := struct {
-		PostID    string  `json:"post_id"`
-		Direction int8 `json:"direction"`
+		PostID    string `json:"post_id"`
+		Direction int8   `json:"direction"`
 	}{}
 	err = json.Unmarshal(data, &required)
 	if err != nil {

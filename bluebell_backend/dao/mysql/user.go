@@ -14,45 +14,33 @@ import (
 
 const secret = "huchao.vip"
 
-/**
- * @Author huchao
- * @Description //TODO 对密码进行加密
- * @Date 21:50 2022/2/10
- **/
+// encryptPassword 对密码进行加密
 func encryptPassword(data []byte) (result string) {
 	h := md5.New()
 	h.Write([]byte(secret))
 	return hex.EncodeToString(h.Sum(data))
 }
 
-/**
- * @Author huchao
- * @Description //TODO 检查指定用户名的用户是否存在
- * @Date 21:50 2022/2/10
- **/
+// CheckUserExist 检查指定用户名的用户是否存在
 func CheckUserExist(username string) (error error) {
-	sqlstr := `select count(user_id) from user where username = ?`
+	sqlStr := `select count(user_id) from user where username = ?`
 	var count int
-	if err := db.Get(&count,sqlstr,username);err != nil {
+	if err := db.Get(&count, sqlStr, username); err != nil {
 		return err
 	}
 	if count > 0 {
-		return errors.New("用户已存在")
+		return errors.New(ErrorUserExit)
 	}
 	return
 }
 
-/**
- * @Author hucaho
- * @Description //TODO 注册业务-向数据库中插入一条新的用户
- * @Date 21:51 2022/2/10
- **/
+// InsertUser 注册业务-向数据库中插入一条新的用户
 func InsertUser(user models.User) (error error) {
 	// 对密码进行加密
 	user.Password = encryptPassword([]byte(user.Password))
 	// 执行SQL语句入库
 	sqlstr := `insert into user(user_id,username,password) values(?,?,?)`
-	_,err := db.Exec(sqlstr,user.UserID,user.UserName,user.Password)
+	_, err := db.Exec(sqlstr, user.UserID, user.UserName, user.Password)
 	return err
 }
 
@@ -65,7 +53,7 @@ func Register(user *models.User) (err error) {
 	}
 	if count > 0 {
 		// 用户已存在
-		return ErrorUserExit
+		return errors.New(ErrorUserExit)
 	}
 	// 生成user_id
 	userID, err := snowflake.GetID()
@@ -116,4 +104,3 @@ func GetUserByID(id uint64) (user *models.User, err error) {
 	err = db.Get(user, sqlStr, id)
 	return
 }
-

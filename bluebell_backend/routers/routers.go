@@ -15,11 +15,7 @@ import (
 	"github.com/gin-contrib/pprof"
 )
 
-/**
- * @Author huchao
- * @Description //TODO 设置路由
- * @Date 21:58 2022/2/10
- **/
+// SetupRouter 设置路由
 func SetupRouter(mode string) *gin.Engine {
 	if mode == gin.ReleaseMode {
 		gin.SetMode(gin.ReleaseMode) // 设置成发布模式
@@ -43,8 +39,8 @@ func SetupRouter(mode string) *gin.Engine {
 
 	v1 := r.Group("/api/v1")
 	// 注册登陆业务
-	v1.POST("/login", controller.LoginHandler)
-	v1.POST("/signup", controller.SignUpHandler) // 注册业务路由
+	v1.POST("/login", controller.LoginHandler)   // 登陆业务
+	v1.POST("/signup", controller.SignUpHandler) // 注册业务
 	v1.GET("/refresh_token", controller.RefreshTokenHandler)
 
 	v1.GET("/posts", controller.PostListHandler)      // 分页展示帖子列表
