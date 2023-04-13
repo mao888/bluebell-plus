@@ -28,7 +28,7 @@ export default {
 		return {
 			username: "",
 			password: "",
-			re_password: "",
+			confirm_password: "",
 			submitted: false
 		};
 	},
@@ -42,11 +42,11 @@ export default {
 			this.$axios({
 				method: 'post',
 				url:'/signup',
-				data: JSON.stringify({
+				data: {
 					username: this.username,
 					password: this.password,
-					re_password: this.re_password
-				})
+					confirm_password: this.re_password
+				}
 			}).then((res)=>{
 				console.log(res.data);
 				if (res.code == 1000) {
