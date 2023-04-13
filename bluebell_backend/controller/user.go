@@ -88,26 +88,11 @@ func LoginHandler(c *gin.Context) {
 	})
 }
 
-/**
- * @Author huchao
- * @Description //TODO 刷新accessToken
- * @Date 17:09 2022/2/17
- **/
 // RefreshTokenHandler 刷新accessToken
-// @Summary 刷新accessToken
-// @Description 刷新accessToken
-// @Tags 用户业务接口
-// @Accept application/json
-// @Produce application/json
-// @Param Authorization header string true "Bearer 用户令牌"
-// @Param object query models.ParamPostList false "查询参数"
-// @Security ApiKeyAuth
-// @Success 200 {object} _ResponsePostList
-// @Router /refresh_token [GET]
 func RefreshTokenHandler(c *gin.Context) {
 	rt := c.Query("refresh_token")
 	// 客户端携带Token有三种方式 1.放在请求头 2.放在请求体 3.放在URI
-	// 这里假设Token放在Header的Authorization中，并使用Bearer开头
+	// 这里假设Token放在Header的 Authorization 中，并使用 Bearer 开头
 	// 这里的具体实现方式要依据你的实际业务情况决定
 	authHeader := c.Request.Header.Get("Authorization")
 	if authHeader == "" {
@@ -123,7 +108,7 @@ func RefreshTokenHandler(c *gin.Context) {
 		return
 	}
 	aToken, rToken, err := jwt.RefreshToken(parts[1], rt)
-	fmt.Println(err)
+	zap.L().Error("jwt.RefreshToken failed", zap.Error(err))
 	c.JSON(http.StatusOK, gin.H{
 		"access_token":  aToken,
 		"refresh_token": rToken,
