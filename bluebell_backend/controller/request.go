@@ -29,20 +29,7 @@ func getCurrentUserID(c *gin.Context) (userID uint64, err error) {
 	return
 }
 
-/**
- * @Author huchao
- * @Description //TODO 分页参数
- * @Date 23:41 2022/2/12
- **/
 // getPageInfo 分页参数
-// @Summary 分页参数
-// @Description 分页参数
-// @Tags 公共接口
-// @Accept application/json
-// @Produce application/json
-// @Param Authorization header string true "Bearer 用户令牌"
-// @Security ApiKeyAuth
-// @Success 200 {object} _ResponsePostList
 func getPageInfo(c *gin.Context) (int64, int64) {
 	pageStr := c.Query("page")
 	SizeStr := c.Query("size")
