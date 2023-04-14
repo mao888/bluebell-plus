@@ -75,6 +75,7 @@ export default {
     flex-grow: 0;
     margin-right: 16px;
     cursor: pointer;
+    font-weight: 600;
   }
   .search {
     flex-grow: 1;
