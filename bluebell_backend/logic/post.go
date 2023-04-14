@@ -10,11 +10,7 @@ import (
 	"go.uber.org/zap"
 )
 
-/**
- * @Author huchao
- * @Description //TODO 创建帖子
- * @Date 19:53 2022/2/12
- **/
+// CreatePost 创建帖子
 func CreatePost(post *models.Post) (err error) {
 	// 1、 生成post_id(生成帖子ID)
 	postID, err := snowflake.GetID()
@@ -58,7 +54,7 @@ func GetPostById(postID int64) (data *models.ApiPostDetail, err error) {
 	post, err := mysql.GetPostByID(postID)
 	if err != nil {
 		zap.L().Error("mysql.GetPostByID(postID) failed",
-			zap.Int64("postID",postID),
+			zap.Int64("postID", postID),
 			zap.Error(err))
 		return nil, err
 	}
@@ -66,7 +62,7 @@ func GetPostById(postID int64) (data *models.ApiPostDetail, err error) {
 	user, err := mysql.GetUserByID(post.AuthorId)
 	if err != nil {
 		zap.L().Error("mysql.GetUserByID() failed",
-			zap.Uint64("postID",post.AuthorId),
+			zap.Uint64("postID", post.AuthorId),
 			zap.Error(err))
 		return
 	}
@@ -74,7 +70,7 @@ func GetPostById(postID int64) (data *models.ApiPostDetail, err error) {
 	community, err := mysql.GetCommunityByID(post.CommunityID)
 	if err != nil {
 		zap.L().Error("mysql.GetCommunityByID() failed",
-			zap.Uint64("community_id",post.CommunityID),
+			zap.Uint64("community_id", post.CommunityID),
 			zap.Error(err))
 		return
 	}
@@ -98,13 +94,13 @@ func GetPostList(page, size int64) (data []*models.ApiPostDetail, err error) {
 		fmt.Println(err)
 		return
 	}
-	data = make([]*models.ApiPostDetail, 0, len(postList))	// data 初始化
+	data = make([]*models.ApiPostDetail, 0, len(postList)) // data 初始化
 	for _, post := range postList {
 		// 根据作者id查询作者信息
 		user, err := mysql.GetUserByID(post.AuthorId)
 		if err != nil {
 			zap.L().Error("mysql.GetUserByID() failed",
-				zap.Uint64("postID",post.AuthorId),
+				zap.Uint64("postID", post.AuthorId),
 				zap.Error(err))
 			continue
 		}
@@ -112,7 +108,7 @@ func GetPostList(page, size int64) (data []*models.ApiPostDetail, err error) {
 		community, err := mysql.GetCommunityByID(post.CommunityID)
 		if err != nil {
 			zap.L().Error("mysql.GetCommunityByID() failed",
-				zap.Uint64("community_id",post.CommunityID),
+				zap.Uint64("community_id", post.CommunityID),
 				zap.Error(err))
 			continue
 		}
@@ -122,7 +118,7 @@ func GetPostList(page, size int64) (data []*models.ApiPostDetail, err error) {
 			CommunityDetail: community,
 			AuthorName:      user.UserName,
 		}
-		data = append(data,postdetail)
+		data = append(data, postdetail)
 	}
 	return
 }
@@ -161,7 +157,7 @@ func GetPostList2(p *models.ParamPostList) (data []*models.ApiPostDetail, err er
 		user, err := mysql.GetUserByID(post.AuthorId)
 		if err != nil {
 			zap.L().Error("mysql.GetUserByID() failed",
-				zap.Uint64("postID",post.AuthorId),
+				zap.Uint64("postID", post.AuthorId),
 				zap.Error(err))
 			continue
 		}
@@ -169,18 +165,18 @@ func GetPostList2(p *models.ParamPostList) (data []*models.ApiPostDetail, err er
 		community, err := mysql.GetCommunityByID(post.CommunityID)
 		if err != nil {
 			zap.L().Error("mysql.GetCommunityByID() failed",
-				zap.Uint64("community_id",post.CommunityID),
+				zap.Uint64("community_id", post.CommunityID),
 				zap.Error(err))
 			continue
 		}
 		// 接口数据拼接
 		postdetail := &models.ApiPostDetail{
-			VoteNum: voteData[idx],
+			VoteNum:         voteData[idx],
 			Post:            post,
 			CommunityDetail: community,
 			AuthorName:      user.UserName,
 		}
-		data = append(data,postdetail)
+		data = append(data, postdetail)
 	}
 	return
 }
@@ -219,7 +215,7 @@ func GetCommunityPostList(p *models.ParamPostList) (data []*models.ApiPostDetail
 		user, err := mysql.GetUserByID(post.AuthorId)
 		if err != nil {
 			zap.L().Error("mysql.GetUserByID() failed",
-				zap.Uint64("postID",post.AuthorId),
+				zap.Uint64("postID", post.AuthorId),
 				zap.Error(err))
 			continue
 		}
@@ -227,18 +223,18 @@ func GetCommunityPostList(p *models.ParamPostList) (data []*models.ApiPostDetail
 		community, err := mysql.GetCommunityByID(post.CommunityID)
 		if err != nil {
 			zap.L().Error("mysql.GetCommunityByID() failed",
-				zap.Uint64("community_id",post.CommunityID),
+				zap.Uint64("community_id", post.CommunityID),
 				zap.Error(err))
 			continue
 		}
 		// 接口数据拼接
 		postdetail := &models.ApiPostDetail{
-			VoteNum: voteData[idx],
+			VoteNum:         voteData[idx],
 			Post:            post,
 			CommunityDetail: community,
 			AuthorName:      user.UserName,
 		}
-		data = append(data,postdetail)
+		data = append(data, postdetail)
 	}
 	return
 }
@@ -258,7 +254,7 @@ func GetPostListNew(p *models.ParamPostList) (data []*models.ApiPostDetail, err 
 		data, err = GetCommunityPostList(p)
 	}
 	if err != nil {
-		zap.L().Error("GetPostListNew failed",zap.Error(err))
+		zap.L().Error("GetPostListNew failed", zap.Error(err))
 		return nil, err
 	}
 	return

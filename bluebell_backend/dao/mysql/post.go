@@ -10,11 +10,6 @@ import (
 	"go.uber.org/zap"
 )
 
-/**
- * @Author huchao
- * @Description //TODO 创建帖子
- * @Date 19:53 2022/2/12
- **/
 // CreatePost 创建帖子
 func CreatePost(post *models.Post) (err error) {
 	sqlStr := `insert into post(
@@ -27,7 +22,7 @@ func CreatePost(post *models.Post) (err error) {
 		err = ErrorInsertFailed
 		return
 	}
-	return
+	return nil
 }
 
 /**
@@ -86,8 +81,8 @@ func GetPostList(page, size int64) (posts []*models.Post, err error) {
 	DESC 
 	limit ?,?
 	`
-	posts = make([]*models.Post, 0, 2)	// 0：长度  2：容量
-	err = db.Select(&posts, sqlStr,(page-1)*size,size)
+	posts = make([]*models.Post, 0, 2) // 0：长度  2：容量
+	err = db.Select(&posts, sqlStr, (page-1)*size, size)
 	return
 
 }
