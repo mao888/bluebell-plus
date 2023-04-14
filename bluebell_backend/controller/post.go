@@ -20,7 +20,6 @@ func CreatePostHandler(c *gin.Context) {
 		ResponseErrorWithMsg(c, CodeInvalidParams, err.Error())
 		return
 	}
-	// 参数校验
 
 	// 获取作者ID，当前请求的UserID(从c取到当前发请求的用户ID)
 	userID, err := getCurrentUserID(c)
