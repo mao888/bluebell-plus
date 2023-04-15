@@ -1,8 +1,7 @@
 <template>
   <div class="content">
     <div class="left">
-      <el-calendar v-model="date">
-      </el-calendar>
+      <SliderBar></SliderBar>
     </div>
     <div class="center">
       <!-- <h4 class="c-l-title">热门帖子</h4> -->
@@ -106,17 +105,17 @@
 </template>
 
 <script>
+import SliderBar from '../components/SliderBar.vue';
 // @ is an alias to /src
 import TimeMeter from '../components/TimeMeter.vue';
 export default {
   name: "Home",
-  components: { TimeMeter },
+  components: { TimeMeter,SliderBar },
   data() {
     return {
       order: "time",
       page: 1,
       postList: [],
-      date:new Date()
     };
   },
   methods: {
@@ -195,24 +194,24 @@ export default {
   justify-content: center;
   margin: 48px auto 0;
   padding: 20px 24px;
-  background: #D3CCE3;
-	/* fallback for old browsers */
-	background: -webkit-linear-gradient(to right, #E9E4F0, #D3CCE3);
-	/* Chrome 10-25, Safari 5.1-6 */
-	background: linear-gradient(to right, #E9E4F0, #D3CCE3);
-	/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: #6190E8;
+  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #6190E8,#A7BFE8 );
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right,  #6190E8,#A7BFE8);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
 
   .left {
-    width:400px;
-    .el-calendar{
-      width: 312px;
-    }
+    width: 312px;
+    margin-top:28px;
+    background:#fff;
   }
 
   .center {
     width: 640px;
     padding-bottom: 10px;
-    margin:0 24px;
+    margin: 0 24px;
 
     .c-l-title {
       font-size: 14px;
