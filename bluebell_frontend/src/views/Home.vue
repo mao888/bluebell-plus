@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="left">
-      <SliderBar></SliderBar>
+      <SideBar></SideBar>
     </div>
     <div class="center">
       <!-- <h4 class="c-l-title">热门帖子</h4> -->
@@ -105,12 +105,12 @@
 </template>
 
 <script>
-import SliderBar from '../components/SliderBar.vue';
+import SideBar from '../components/SideBar.vue';
 // @ is an alias to /src
 import TimeMeter from '../components/TimeMeter.vue';
 export default {
   name: "Home",
-  components: { TimeMeter,SliderBar },
+  components: { TimeMeter,SideBar },
   data() {
     return {
       order: "time",
@@ -206,6 +206,7 @@ export default {
     width: 312px;
     margin-top:28px;
     background:#fff;
+    border-radius:4px;
   }
 
   .center {
@@ -409,6 +410,7 @@ export default {
       overflow: visible;
       word-wrap: break-word;
       margin-bottom: 20px;
+      border-radius: 4px;
 
       .r-c-title {
         background-image: linear-gradient(0deg,
@@ -423,6 +425,7 @@ export default {
         padding-left: 10px;
         box-sizing: border-box;
         text-align: center;
+        border-radius: 4px 4px 0px 0px;
       }
 
       .r-c-content {
@@ -488,6 +491,7 @@ export default {
       border-radius: 4px;
       overflow: visible;
       word-wrap: break-word;
+      border-radius: 4px;
 
       .r-t-title {
         font-size: 10px;

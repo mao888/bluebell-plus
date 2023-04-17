@@ -1,5 +1,5 @@
 <template>
-	<div class="calendor">
+	<div class="side-bar-container">
 		<div class="title">
 			<el-avatar src="https://z3.ax1x.com/2021/08/31/hdu3a6.jpg"></el-avatar>
 			<h4>博主信息</h4>
@@ -53,13 +53,13 @@
 				</div>
 			</el-card>
 		</div>
-		<el-calendar v-model="value" width="300px" />
+		<el-calendar class="calendar" v-model="value" width="300px" />
 	</div>
 </template>
   
 <script>
 export default {
-	name: "SliderBar",
+	name: "SideBar",
 	data() {
 		return {
 			imgOptions: [
@@ -105,7 +105,7 @@ export default {
 </script>
   
 <style type="scss" scoped>
-.calendor {
+.side-bar-container {
 	display: flex;
 	flex-direction: column;
 	font-size: 14px;
@@ -226,4 +226,8 @@ export default {
 /deep/ .el-calendar__body {
 	padding: 12px 20px 35px;
 	/* background: #fdf6ec; */
-}</style>
+}
+.calendar{
+	margin-bottom:0.5rem;
+}
+</style>
