@@ -141,6 +141,12 @@ export default {
   margin: 0 auto;
   padding: 20px 24px;
   margin-top: 48px;
+  background: #6190E8;
+  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #6190E8,#A7BFE8 );
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right,  #6190E8,#A7BFE8);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   .left {
     flex-grow: 1;
     max-width: 740px;
@@ -157,6 +163,7 @@ export default {
       display: -webkit-flex;
       display: flex;
       justify-content: space-between;
+      color:#fff;
       .p-btn {
         font-size: 12px;
         font-weight: 700;
