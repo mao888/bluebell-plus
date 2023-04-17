@@ -4,14 +4,14 @@
     <div class="left">
       <div class="post-name">我好想写点什么</div>
       <div class="post-type">
-        <input type="text" class="post-type-value" placeholder="选择一个频道" v-model="selectCommunity.name" @click="showCommunity()"/>
+        <input type="text" class="post-type-value" placeholder="选择一个频道" v-model="selectCommunity.community_name" @click="showCommunity()"/>
         <ul class="post-type-options" v-show="showCommunityList">
           <li class="post-type-cell"
             v-for="(community, index) in communityList"
             :key="community.id"
             @click="selected(index)"
           >
-            {{community.name}}
+            {{community.community_name}}
           </li>
         </ul>
         <i class="p-icon"></i>
@@ -82,11 +82,11 @@ export default {
       this.$axios({
         method: "post",
         url: "/post",
-        data: JSON.stringify({
+        data: {
           title: this.title,
           content: this.content,
-          community_id: this.selectCommunity.id
-        })
+          community_id: this.selectCommunity.community_id
+        }
       })
         .then(response => {
           console.log(response.data);
@@ -141,6 +141,12 @@ export default {
   margin: 0 auto;
   padding: 20px 24px;
   margin-top: 48px;
+  background: #6190E8;
+  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #6190E8,#A7BFE8 );
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right,  #6190E8,#A7BFE8);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   .left {
     flex-grow: 1;
     max-width: 740px;
@@ -157,6 +163,7 @@ export default {
       display: -webkit-flex;
       display: flex;
       justify-content: space-between;
+      color:#fff;
       .p-btn {
         font-size: 12px;
         font-weight: 700;

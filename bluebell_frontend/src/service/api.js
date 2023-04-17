@@ -4,8 +4,8 @@ axios.defaults.baseURL = "/api/v1/";
 axios.interceptors.request.use((config) => {
   let loginResult = JSON.parse(localStorage.getItem("loginResult"));	// 解析从localStorage里拿出的loginResult
   if (loginResult) { 
-	const token = loginResult.token		// 取出accessToken
-	config.headers.Authorization = `Bearer ${token}`;	// 将accessToken放入到请求头里
+	const token = loginResult.access_token		// 取出accessToken
+	config.headers.Authorization = `${token}`;	// 将accessToken放入到请求头里
   }
   return config;
 }, (error) => {

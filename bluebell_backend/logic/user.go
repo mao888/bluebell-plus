@@ -5,22 +5,13 @@ import (
 	"bluebell_backend/models"
 	"bluebell_backend/pkg/jwt"
 	"bluebell_backend/pkg/snowflake"
-	//"go.uber.org/zap"
 )
 
-//func UserPasswordValid() {
-//
-//}
-
-/**
- * @Author huchao
- * @Description //TODO 存放注册业务逻辑的代码
- * @Date 21:52 2022/2/10
- **/
+// SignUp 注册业务逻辑
 func SignUp(p *models.RegisterForm) (error error) {
 	// 1、判断用户存不存在
 	err := mysql.CheckUserExist(p.UserName)
-	if err !=nil {
+	if err != nil {
 		// 数据库查询出错
 		return err
 	}
@@ -40,26 +31,22 @@ func SignUp(p *models.RegisterForm) (error error) {
 	return mysql.InsertUser(u)
 }
 
-/**
- * @Author huchao
- * @Description //TODO 存放登录业务逻辑代码
- * @Date 21:52 2022/2/10
- **/
-func Login(p *models.LoginForm) (user *models.User, error error)  {
+// Login 登录业务逻辑代码
+func Login(p *models.LoginForm) (user *models.User, error error) {
 	user = &models.User{
 		UserName: p.UserName,
 		Password: p.Password,
 	}
 	if err := mysql.Login(user); err != nil {
-		return nil,err
+		return nil, err
 	}
 	// 生成JWT
 	//return jwt.GenToken(user.UserID,user.UserName)
-	atoken,rtoken, err := jwt.GenToken(user.UserID,user.UserName)
+	accessToken, refreshToken, err := jwt.GenToken(user.UserID, user.UserName)
 	if err != nil {
 		return
 	}
-	user.AccessToken = atoken
-	user.RefreshToken = rtoken
+	user.AccessToken = accessToken
+	user.RefreshToken = refreshToken
 	return
 }

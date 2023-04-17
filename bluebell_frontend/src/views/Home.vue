@@ -1,41 +1,34 @@
 <template>
   <div class="content">
     <div class="left">
+      <SideBar></SideBar>
+    </div>
+    <div class="center">
       <!-- <h4 class="c-l-title">热门帖子</h4> -->
       <div class="c-l-header">
-        <div class="new btn-iconfont"
-        :class="{ active: timeOrder }"
-        @click="selectOrder('time')"
-        >
+        <div class="new btn-iconfont" :class="{ active: timeOrder }" @click="selectOrder('time')">
           <i class="iconfont icon-polygonred"></i>New
         </div>
-        <div class="top btn-iconfont"
-         :class="{ active: scoreOrder }"
-         @click="selectOrder('score')"
-        >
+        <div class="top btn-iconfont" :class="{ active: scoreOrder }" @click="selectOrder('score')">
           <i class="iconfont icon-top"></i>Score
         </div>
         <button class="btn-publish" @click="goPublish">发表</button>
       </div>
       <ul class="c-l-list">
-        <li class="c-l-item"  v-for="post in postList" :key="post.id">
+        <li class="c-l-item" v-for="post in postList" :key="post.id">
           <div class="post">
             <a class="vote">
-              <span class="iconfont icon-up"
-              @click="vote(post.id, '1')"
-              ></span>
+              <span class="iconfont icon-up" @click="vote(post.id, '1')"></span>
             </a>
-            <span class="text">{{post.vote_num}}</span>
+            <span class="text">{{ post.vote_num }}</span>
             <a class="vote">
-              <span class="iconfont icon-down"
-              @click="vote(post.id, '-1')"
-              ></span>
+              <span class="iconfont icon-down" @click="vote(post.id, '-1')"></span>
             </a>
           </div>
           <div class="l-container" @click="goDetail(post.id)">
-            <h4 class="con-title">{{post.title}}</h4>
+            <h4 class="con-title">{{ post.title }}</h4>
             <div class="con-memo">
-              <p>{{post.content}}</p>
+              <p>{{ post.content }}</p>
             </div>
             <!-- <div class="user-btn">
               <span class="btn-item">
@@ -48,6 +41,9 @@
       </ul>
     </div>
     <div class="right">
+      <div class="run-time-container">
+        <TimeMeter></TimeMeter>
+      </div>
       <div class="communities">
         <h2 class="r-c-title">今日火热频道排行榜</h2>
         <ul class="r-c-content">
@@ -109,28 +105,29 @@
 </template>
 
 <script>
+import SideBar from '../components/SideBar.vue';
 // @ is an alias to /src
-
+import TimeMeter from '../components/TimeMeter.vue';
 export default {
   name: "Home",
-  components: {},
+  components: { TimeMeter,SideBar },
   data() {
     return {
       order: "time",
       page: 1,
-      postList: []
+      postList: [],
     };
   },
   methods: {
-    selectOrder(order){
+    selectOrder(order) {
       this.order = order;
       this.getPostList()
     },
-    goPublish(){
+    goPublish() {
       this.$router.push({ name: "Publish" });
     },
-    goDetail(id){
-      this.$router.push({ name: "Content", params: { id: id }});
+    goDetail(id) {
+      this.$router.push({ name: "Content", params: { id: id } });
     },
     getPostList() {
       this.$axios({
@@ -153,7 +150,7 @@ export default {
           console.log(error);
         });
     },
-    vote(post_id, direction){
+    vote(post_id, direction) {
       this.$axios({
         method: "post",
         url: "/vote",
@@ -174,14 +171,14 @@ export default {
         });
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.getPostList();
   },
-  computed:{
-    timeOrder(){
+  computed: {
+    timeOrder() {
       return this.order == "time";
     },
-    scoreOrder(){
+    scoreOrder() {
       return this.order == "score";
     }
   }
@@ -197,9 +194,26 @@ export default {
   justify-content: center;
   margin: 48px auto 0;
   padding: 20px 24px;
+  background: #6190E8;
+  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #6190E8,#A7BFE8 );
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right,  #6190E8,#A7BFE8);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
   .left {
+    width: 312px;
+    margin-top:28px;
+    background:#fff;
+    border-radius:4px;
+  }
+
+  .center {
     width: 640px;
     padding-bottom: 10px;
+    margin: 0 24px;
+
     .c-l-title {
       font-size: 14px;
       font-weight: 500;
@@ -208,6 +222,7 @@ export default {
       text-transform: unset;
       padding-bottom: 10px;
     }
+
     .c-l-header {
       align-items: center;
       background-color: #ffffff;
@@ -223,13 +238,16 @@ export default {
       justify-content: flex-start;
       margin-bottom: 16px;
       padding: 0 12px;
+
       .iconfont {
         margin-right: 4px;
       }
+
       .btn-iconfont {
         display: flex;
         display: -webkit-flex;
       }
+
       .active {
         background: #f6f7f8;
         color: #0079d3;
@@ -240,13 +258,16 @@ export default {
         margin-right: 8px;
         padding: 0 10px;
       }
+
       .new {
         font-size: 14px;
         margin-right: 18px;
       }
+
       .top {
         font-size: 14px;
       }
+
       .btn-publish {
         width: 64px;
         height: 32px;
@@ -260,12 +281,14 @@ export default {
         margin-left: auto;
         cursor: pointer;
       }
+
       .sort {
         margin-left: 300px;
         display: flex;
         color: #0079d3;
         display: -webkit-flex;
         align-items: center;
+
         .sort-triangle {
           width: 0;
           height: 0;
@@ -278,6 +301,7 @@ export default {
         }
       }
     }
+
     .c-l-list {
       .c-l-item {
         list-style: none;
@@ -289,6 +313,7 @@ export default {
         background-color: rgba(255, 255, 255, 0.8);
         color: #878a8c;
         position: relative;
+
         .post {
           align-items: center;
           box-sizing: border-box;
@@ -304,12 +329,15 @@ export default {
           width: 40px;
           border-left: 4px solid transparent;
           background: #f8f9fa;
+
           .iconfont {
             margin-right: 0;
           }
+
           .down {
             transform: scaleY(-1);
           }
+
           .text {
             color: #1a1a1b;
             font-size: 12px;
@@ -319,8 +347,10 @@ export default {
             word-break: normal;
           }
         }
+
         .l-container {
           padding: 15px;
+
           .con-title {
             color: #000000;
             font-size: 18px;
@@ -329,27 +359,31 @@ export default {
             text-decoration: none;
             word-break: break-word;
           }
+
           .con-memo {
             margin-top: 10px;
             margin-bottom: 10px;
           }
+
           .con-cover {
             height: 512px;
             width: 100%;
-            background: url("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1585999647247&di=7e9061211c23e3ed9f0c4375bb3822dc&imgtype=0&src=http%3A%2F%2Fi1.hdslb.com%2Fbfs%2Farchive%2F04d8cda08e170f4a58c18c45a93c539375c22162.jpg")
-              no-repeat;
+            background: url("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1585999647247&di=7e9061211c23e3ed9f0c4375bb3822dc&imgtype=0&src=http%3A%2F%2Fi1.hdslb.com%2Fbfs%2Farchive%2F04d8cda08e170f4a58c18c45a93c539375c22162.jpg") no-repeat;
             background-size: cover;
             margin-top: 10px;
             margin-bottom: 10px;
           }
+
           .user-btn {
             font-size: 14px;
             display: flex;
             display: -webkit-flex;
+
             .btn-item {
               display: flex;
               display: -webkit-flex;
               margin-right: 10px;
+
               .iconfont {
                 margin-right: 4px;
               }
@@ -359,10 +393,15 @@ export default {
       }
     }
   }
+
   .right {
     width: 312px;
-    margin-left: 24px;
     margin-top: 28px;
+
+    .run-time-container {
+      margin-bottom: 1rem;
+    }
+
     .communities {
       background-color: #ffffff;
       color: #1a1a1b;
@@ -371,12 +410,12 @@ export default {
       overflow: visible;
       word-wrap: break-word;
       margin-bottom: 20px;
+      border-radius: 4px;
+
       .r-c-title {
-        background-image: linear-gradient(
-          0deg,
-          rgba(0, 0, 0, 0.3) 0,
-          transparent
-        );
+        background-image: linear-gradient(0deg,
+            rgba(0, 0, 0, 0.3) 0,
+            transparent);
         background-color: #0079d3;
         height: 80px;
         width: 100%;
@@ -386,7 +425,9 @@ export default {
         padding-left: 10px;
         box-sizing: border-box;
         text-align: center;
+        border-radius: 4px 4px 0px 0px;
       }
+
       .r-c-content {
         .r-c-item {
           align-items: center;
@@ -396,6 +437,7 @@ export default {
           padding: 0 12px;
           border-bottom: thin solid #edeff1;
           font-size: 14px;
+
           .index {
             width: 20px;
             color: #1c1c1c;
@@ -403,6 +445,7 @@ export default {
             font-weight: 500;
             line-height: 18px;
           }
+
           .icon {
             width: 32px;
             height: 32px;
@@ -411,11 +454,13 @@ export default {
             background-size: cover;
             margin-right: 20px;
           }
+
           &:last-child {
             border-bottom: none;
           }
         }
       }
+
       .view-all {
         background-color: #0079d3;
         border: 1px solid transparent;
@@ -435,6 +480,7 @@ export default {
         margin: 20px 0 20px 16px;
       }
     }
+
     .r-trending {
       padding-top: 16px;
       width: 312px;
@@ -445,6 +491,8 @@ export default {
       border-radius: 4px;
       overflow: visible;
       word-wrap: break-word;
+      border-radius: 4px;
+
       .r-t-title {
         font-size: 10px;
         font-weight: 700;
@@ -459,17 +507,21 @@ export default {
         fill: #1a1a1b;
         padding: 0 12px 12px;
       }
+
       .rank {
         padding: 12px;
+
         .r-t-cell {
           display: flex;
           display: -webkit-flex;
           align-items: center;
           justify-content: space-between;
           margin-bottom: 16px;
+
           .r-t-cell-info {
             display: flex;
           }
+
           .avatar {
             width: 32px;
             height: 32px;
@@ -477,8 +529,10 @@ export default {
             background-size: cover;
             margin-right: 10px;
           }
+
           .info {
             margin-right: 10px;
+
             .info-title {
               font-size: 12px;
               font-weight: 500;
@@ -486,6 +540,7 @@ export default {
               text-overflow: ellipsis;
               width: 144px;
             }
+
             .info-num {
               font-size: 12px;
               font-weight: 400;
@@ -493,6 +548,7 @@ export default {
               padding-bottom: 4px;
             }
           }
+
           .join-btn {
             width: 106px;
             height: 32px;
@@ -508,5 +564,4 @@ export default {
       }
     }
   }
-}
-</style>
+}</style>

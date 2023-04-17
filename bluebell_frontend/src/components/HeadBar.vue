@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-      <span class="logo" @click="goIndex">bluebell</span>
+      <span class="logo" @click="goIndex">风铃草论坛</span>
     <div class="search">
       <label class="s-logo"></label>
       <input type="text" class="s-input" placeholder="搜索" />
@@ -75,6 +75,7 @@ export default {
     flex-grow: 0;
     margin-right: 16px;
     cursor: pointer;
+    font-weight: 600;
   }
   .search {
     flex-grow: 1;
