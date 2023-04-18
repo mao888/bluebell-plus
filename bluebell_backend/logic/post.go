@@ -119,22 +119,18 @@ func GetPostList(page, size int64) ([]*models.ApiPostDetail, error) {
 	return data, nil
 }
 
-/**
- * @Author huchao
- * @Description //TODO 升级版帖子列表接口：按创建时间排序 或者 按照 分数排序
- * @Date 22:03 2022/2/15
- **/
+// GetPostList2 升级版帖子列表接口：按 创建时间 或者 分数排序
 func GetPostList2(p *models.ParamPostList) (data []*models.ApiPostDetail, err error) {
 	// 2、去redis查询id列表
 	ids, err := redis.GetPostIDsInOrder(p)
 	if err != nil {
-		return
+		return nil, err
 	}
 	if len(ids) == 0 {
 		zap.L().Warn("redis.GetPostIDsInOrder(p) return 0 data")
-		return
+		return nil, nil
 	}
-	zap.L().Debug("GetPostList2", zap.Any("ids", ids))
+	zap.L().Debug("GetPostList2", zap.Any("ids: ", ids))
 	// 提前查询好每篇帖子的投票数
 	voteData, err := redis.GetPostVoteData(ids)
 	if err != nil {
@@ -235,11 +231,7 @@ func GetCommunityPostList(p *models.ParamPostList) (data []*models.ApiPostDetail
 	return
 }
 
-/**
- * @Author huchao
- * @Description //TODO 将两个查询帖子列表逻辑合二为一的函数
- * @Date 12:08 2022/2/17
- **/
+// GetPostListNew 将两个查询帖子列表逻辑合二为一的函数
 func GetPostListNew(p *models.ParamPostList) (data []*models.ApiPostDetail, err error) {
 	// 根据请求参数的不同,执行不同的业务逻辑
 	if p.CommunityID == 0 {
@@ -253,5 +245,5 @@ func GetPostListNew(p *models.ParamPostList) (data []*models.ApiPostDetail, err 
 		zap.L().Error("GetPostListNew failed", zap.Error(err))
 		return nil, err
 	}
-	return
+	return data, nil
 }
