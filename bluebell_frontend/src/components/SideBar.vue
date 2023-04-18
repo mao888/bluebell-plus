@@ -19,32 +19,38 @@
 				<li>
 					<el-tag type="success">
 						<i class="el-icon-grape"></i>
-						qq邮箱:2557523039@qq.com
+						公众号: Gopher毛
 					</el-tag>
 				</li>
 				<li>
 					<el-tag type="warning">
 						<i class="el-icon-ice-tea"></i>
-						网易邮箱 qwxxhuchao@163.com
+						qq邮箱: 2557523039@qq.com
 					</el-tag>
 				</li>
 				<li>
 					<el-tag>
 						<i class="el-icon-watermelon"></i>
-						微信号:wxid_897c5xh9mya312
+						QQ交流群1: 1007576722
+					</el-tag>
+				</li>
+				<li>
+					<el-tag>
+						<i class="el-icon-watermelon"></i>
+						QQ交流群2: 579480724
 					</el-tag>
 				</li>
 				<li>
 					<el-tag type="danger">
 						<i class="el-icon-cherry"></i>
-						电话：18864470086
+						电话: 18836288306
 					</el-tag>
 				</li>
 			</ul>
 		</div>
 		<div class="mine">
 			<el-card class="box-card">
-				<div slot="header" class="clearfix">
+				<div slot="header" class="clearfix" style="text-align:center;">
 					<span>关于我</span>
 				</div>
 				<!-- v-for="o in 1" :key="o"  -->

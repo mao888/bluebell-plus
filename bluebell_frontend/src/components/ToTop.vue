@@ -2,7 +2,7 @@
   <div class="go-to-top">
     <button class="top-btn">back to top</button>
   </div>
-</template>>
+</template>
 
 
 <script>

@@ -5,16 +5,16 @@
 				<div class="grid-content bg-purple-dark footer">
 					<ul class="friends-link">
 						<li>
+							<a href="https://github.com/mao888">胡超Github</a>
+						</li>
+						<li>
+							<a href="https://space.bilibili.com/289144374?spm_id_from=333.1007.0.0">哔哩哔哩</a>
+						</li>
+						<li>
 							<a href="https://wk-blog.vip">☆往事随風☆</a>
 						</li>
 						<li>
-							<a href="#">河南科技学院</a>
-						</li>
-						<li>
-							<a href="#">三月</a>
-						</li>
-						<li>
-							<a href="#">其他</a>
+							<a href="https://blog.csdn.net/qq_45696377?spm=1000.2115.3001.5343">CSDN</a>
 						</li>
 
 					</ul>
