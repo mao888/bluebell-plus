@@ -3,6 +3,7 @@ package mysql
 import (
 	"bluebell_backend/models"
 	"database/sql"
+	"errors"
 	"strings"
 
 	"github.com/jmoiron/sqlx"
@@ -25,34 +26,24 @@ func CreatePost(post *models.Post) (err error) {
 	return nil
 }
 
-/**
- * @Author huchao
- * @Description //TODO 根据Id查询帖子详情
- * @Date 21:53 2022/2/12
- **/
+// GetPostByID 根据Id查询帖子详情
 func GetPostByID(pid int64) (post *models.Post, err error) {
 	post = new(models.Post)
 	sqlStr := `select post_id, title, content, author_id, community_id, create_time
 	from post
 	where post_id = ?`
 	err = db.Get(post, sqlStr, pid)
-	if err == sql.ErrNoRows {
-		err = ErrorInvalidID
-		return
-	}
 	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, errors.New(ErrorInvalidID)
+		}
 		zap.L().Error("query post failed", zap.String("sql", sqlStr), zap.Error(err))
-		err = ErrorQueryFailed
-		return
+		return nil, errors.New(ErrorQueryFailed)
 	}
 	return
 }
 
-/**
- * @Author huchao
- * @Description //TODO 根据给定的id列表查询帖子数据
- * @Date 22:55 2022/2/15
- **/
+// GetPostListByIDs 根据给定的id列表查询帖子数据
 func GetPostListByIDs(ids []string) (postList []*models.Post, err error) {
 	sqlStr := `select post_id, title, content, author_id, community_id, create_time
 	from post
@@ -69,11 +60,7 @@ func GetPostListByIDs(ids []string) (postList []*models.Post, err error) {
 	return
 }
 
-/**
- * @Author huchao
- * @Description //TODO 获取帖子列表
- * @Date 22:58 2022/2/12
- **/
+// GetPostList 获取帖子列表
 func GetPostList(page, size int64) (posts []*models.Post, err error) {
 	sqlStr := `select post_id, title, content, author_id, community_id, create_time
 	from post
@@ -84,5 +71,4 @@ func GetPostList(page, size int64) (posts []*models.Post, err error) {
 	posts = make([]*models.Post, 0, 2) // 0：长度  2：容量
 	err = db.Select(&posts, sqlStr, (page-1)*size, size)
 	return
-
 }

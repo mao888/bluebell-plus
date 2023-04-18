@@ -40,37 +40,7 @@ func CreatePostHandler(c *gin.Context) {
 	ResponseSuccess(c, nil)
 }
 
-// PostListHandler 帖子列表
-//func PostListHandler(c *gin.Context) {
-//	order, _ := c.GetQuery("order")
-//	pageStr, ok := c.GetQuery("page")
-//	if !ok {
-//		pageStr = "1"
-//	}
-//	pageNum, err := strconv.ParseInt(pageStr, 10, 64)
-//	if err != nil {
-//		pageNum = 1
-//	}
-//	posts := redis.GetPost(order, pageNum)
-//	fmt.Println(len(posts))
-//	ResponseSuccess(c, posts)
-//}
-
-/**
- * @Author huchao
- * @Description //TODO 分页获取帖子列表
- * @Date 22:55 2022/2/12
- **/
 // PostListHandler 分页获取帖子列表
-// @Summary 分页获取帖子列表
-// @Description 分页获取帖子列表
-// @Tags 帖子相关接口
-// @Accept application/json
-// @Produce application/json
-// @Param Authorization header string true "Bearer 用户令牌"
-// @Security ApiKeyAuth
-// @Success 200 {object} _ResponsePostList
-// @Router /posts [GET]
 func PostListHandler(c *gin.Context) {
 	// 获取分页参数
 	page, size := getPageInfo(c)

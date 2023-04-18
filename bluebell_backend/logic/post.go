@@ -83,18 +83,14 @@ func GetPostById(postID int64) (data *models.ApiPostDetail, err error) {
 	return
 }
 
-/**
- * @Author huchao
- * @Description //TODO 获取帖子列表
- * @Date 22:56 2022/2/12
- **/
-func GetPostList(page, size int64) (data []*models.ApiPostDetail, err error) {
+// GetPostList 获取帖子列表
+func GetPostList(page, size int64) ([]*models.ApiPostDetail, error) {
 	postList, err := mysql.GetPostList(page, size)
 	if err != nil {
-		fmt.Println(err)
-		return
+		zap.L().Error("mysql.GetPostList() failed")
+		return nil, err
 	}
-	data = make([]*models.ApiPostDetail, 0, len(postList)) // data 初始化
+	data := make([]*models.ApiPostDetail, 0, len(postList)) // data 初始化
 	for _, post := range postList {
 		// 根据作者id查询作者信息
 		user, err := mysql.GetUserByID(post.AuthorId)
@@ -113,14 +109,14 @@ func GetPostList(page, size int64) (data []*models.ApiPostDetail, err error) {
 			continue
 		}
 		// 接口数据拼接
-		postdetail := &models.ApiPostDetail{
+		postDetail := &models.ApiPostDetail{
 			Post:            post,
 			CommunityDetail: community,
 			AuthorName:      user.UserName,
 		}
-		data = append(data, postdetail)
+		data = append(data, postDetail)
 	}
-	return
+	return data, nil
 }
 
 /**
