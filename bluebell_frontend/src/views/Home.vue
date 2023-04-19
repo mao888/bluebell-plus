@@ -44,61 +44,11 @@
       <div class="run-time-container">
         <TimeMeter></TimeMeter>
       </div>
-      <div class="communities">
-        <h2 class="r-c-title">今日火热频道排行榜</h2>
-        <ul class="r-c-content">
-          <li class="r-c-item">
-            <span class="index">1</span>
-            <i class="icon"></i>
-            b/coding
-          </li>
-          <li class="r-c-item">
-            <span class="index">2</span>
-            <i class="icon"></i>
-            b/tree_hole
-          </li>
-          <li class="r-c-item">
-            <span class="index">3</span>
-            <i class="icon"></i>
-            b/job
-          </li>
-        </ul>
-        <button class="view-all">查看所有</button>
+      <div class="github-project-card-container">
+        <GithubProjectCard language="all"></GithubProjectCard>
       </div>
-      <div class="r-trending">
-        <h2 class="r-t-title">持续热门频道</h2>
-        <ul class="rank">
-          <li class="r-t-cell">
-            <div class="r-t-cell-info">
-              <div class="avatar"></div>
-              <div class="info">
-                <span class="info-title">b/Book</span>
-                <p class="info-num">7.1k members</p>
-              </div>
-            </div>
-            <button class="join-btn">JOIN</button>
-          </li>
-          <li class="r-t-cell">
-            <div class="r-t-cell-info">
-              <div class="avatar"></div>
-              <div class="info">
-                <span class="info-title">b/coding</span>
-                <p class="info-num">3.2k members</p>
-              </div>
-            </div>
-            <button class="join-btn">JOIN</button>
-          </li>
-          <li class="r-t-cell">
-            <div class="r-t-cell-info">
-              <div class="avatar"></div>
-              <div class="info">
-                <span class="info-title">b/job</span>
-                <p class="info-num">2.5k members</p>
-              </div>
-            </div>
-            <button class="join-btn">JOIN</button>
-          </li>
-        </ul>
+      <div class="github-golang-project-card-container">
+        <GithubProjectCard language="golang" title="Golang热门项目排行榜"></GithubProjectCard>
       </div>
     </div>
   </div>
@@ -108,9 +58,10 @@
 import SideBar from '../components/SideBar.vue';
 // @ is an alias to /src
 import TimeMeter from '../components/TimeMeter.vue';
+import GithubProjectCard from './components/GithubProjectCard.vue';
 export default {
   name: "Home",
-  components: { TimeMeter,SideBar },
+  components: { TimeMeter, SideBar ,GithubProjectCard},
   data() {
     return {
       order: "time",
@@ -196,17 +147,18 @@ export default {
   padding: 20px 24px;
   background: #6190E8;
   /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #6190E8,#A7BFE8 );
+  background: -webkit-linear-gradient(to right, #6190E8, #A7BFE8);
   /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right,  #6190E8,#A7BFE8);
+  background: linear-gradient(to right, #6190E8, #A7BFE8);
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
 
   .left {
     width: 312px;
-    margin-top:28px;
-    background:#fff;
-    border-radius:4px;
+    height:fit-content;
+    margin-top: 28px;
+    background: #fff;
+    border-radius: 4px;
   }
 
   .center {
@@ -401,167 +353,9 @@ export default {
     .run-time-container {
       margin-bottom: 1rem;
     }
-
-    .communities {
-      background-color: #ffffff;
-      color: #1a1a1b;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      overflow: visible;
-      word-wrap: break-word;
-      margin-bottom: 20px;
-      border-radius: 4px;
-
-      .r-c-title {
-        background-image: linear-gradient(0deg,
-            rgba(0, 0, 0, 0.3) 0,
-            transparent);
-        background-color: #0079d3;
-        height: 80px;
-        width: 100%;
-        color: #fff;
-        font-size: 20px;
-        line-height: 120px;
-        padding-left: 10px;
-        box-sizing: border-box;
-        text-align: center;
-        border-radius: 4px 4px 0px 0px;
-      }
-
-      .r-c-content {
-        .r-c-item {
-          align-items: center;
-          display: flex;
-          display: -webkit-flex;
-          height: 48px;
-          padding: 0 12px;
-          border-bottom: thin solid #edeff1;
-          font-size: 14px;
-
-          .index {
-            width: 20px;
-            color: #1c1c1c;
-            font-size: 14px;
-            font-weight: 500;
-            line-height: 18px;
-          }
-
-          .icon {
-            width: 32px;
-            height: 32px;
-            background-image: url("../assets/images/avatar.png");
-            background-repeat: no-repeat;
-            background-size: cover;
-            margin-right: 20px;
-          }
-
-          &:last-child {
-            border-bottom: none;
-          }
-        }
-      }
-
-      .view-all {
-        background-color: #0079d3;
-        border: 1px solid transparent;
-        border-radius: 4px;
-        box-sizing: border-box;
-        text-align: center;
-        letter-spacing: 1px;
-        text-decoration: none;
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 0.5px;
-        line-height: 24px;
-        text-transform: uppercase;
-        padding: 3px 0;
-        width: 280px;
-        color: #fff;
-        margin: 20px 0 20px 16px;
-      }
-    }
-
-    .r-trending {
-      padding-top: 16px;
-      width: 312px;
-      background-color: #ffffff;
-      color: #1a1a1b;
-      fill: #1a1a1b;
-      border: 1px solid #cccccc;
-      border-radius: 4px;
-      overflow: visible;
-      word-wrap: break-word;
-      border-radius: 4px;
-
-      .r-t-title {
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: 0.5px;
-        line-height: 12px;
-        text-transform: uppercase;
-        background-color: #ffffff;
-        border-radius: 3px 3px 0 0;
-        color: #1a1a1b;
-        display: -ms-flexbox;
-        display: flex;
-        fill: #1a1a1b;
-        padding: 0 12px 12px;
-      }
-
-      .rank {
-        padding: 12px;
-
-        .r-t-cell {
-          display: flex;
-          display: -webkit-flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: 16px;
-
-          .r-t-cell-info {
-            display: flex;
-          }
-
-          .avatar {
-            width: 32px;
-            height: 32px;
-            background: url("../assets/images/avatar.png") no-repeat;
-            background-size: cover;
-            margin-right: 10px;
-          }
-
-          .info {
-            margin-right: 10px;
-
-            .info-title {
-              font-size: 12px;
-              font-weight: 500;
-              line-height: 16px;
-              text-overflow: ellipsis;
-              width: 144px;
-            }
-
-            .info-num {
-              font-size: 12px;
-              font-weight: 400;
-              line-height: 16px;
-              padding-bottom: 4px;
-            }
-          }
-
-          .join-btn {
-            width: 106px;
-            height: 32px;
-            line-height: 32px;
-            background-color: #0079d3;
-            color: #ffffff;
-            border: 1px solid transparent;
-            border-radius: 4px;
-            box-sizing: border-box;
-            text-align: center;
-          }
-        }
-      }
+    .github-project-card-container{
+      margin:1rem 0;
     }
   }
-}</style>
+}
+</style>
