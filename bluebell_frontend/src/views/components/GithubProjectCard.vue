@@ -2,7 +2,7 @@
 	<el-row>
 		<el-col :span="24">
 			<el-card :body-style="{ padding: 0, border: 'none' }" class="box-card">
-				<h2 class="title">{{title}}</h2>
+				<h2 class="title">{{ title }}</h2>
 				<ul class="github-hot-project-list">
 					<li class="github-hot-project-item" v-for="project in projectList" :key="project.id">
 						<div class="user-info">
@@ -24,12 +24,16 @@
 								<span>{{ handleNumber(project.forks_count) }}</span>
 							</span>
 							<span class="languages" v-if="project.language">
-								<i class="el-icon-s-help" :style="{color:handleTagColor(project.language)}"></i>
+								<i class="el-icon-s-help" :style="{ color: handleTagColor(project.language) }"></i>
 								<span>{{ project.language }}</span>
 							</span>
 						</div>
 						<el-divider></el-divider>
 					</li>
+					<div class="next-btn" v-if="projectList.length > 0" @click="getProject">
+						<i :class="loading"></i>
+						<span>加载更多...</span>
+					</div>
 					<el-skeleton v-if="projectList.length <= 0" :rows="6" />
 				</ul>
 			</el-card>
@@ -40,52 +44,53 @@
 <script>
 export default {
 	name: 'GithubProjectCard',
-	props:{
-		title:{
-			type:String,
-			require:true,
-			default:'Github热门项目排行榜'
+	props: {
+		title: {
+			type: String,
+			require: true,
+			default: 'Github热门项目排行榜'
 		},
-		language:{
-			type:String,
-			require:true,
-			default:'all'
+		language: {
+			type: String,
+			require: true,
+			default: 'all'
 		},
-		sortType:{
-			type:String,
-			require:true,
-			default:'desc'
+		sortType: {
+			type: String,
+			require: true,
+			default: 'desc'
 		},
-		pageSize:{
-			type:Number,
-			require:true,
-			default:5
+		pageSize: {
+			type: Number,
+			require: true,
+			default: 3
 		}
 	},
 	data() {
 		return {
 			projectList: [],
-			urls:{
-				all:`https://api.github.com/search/repositories?q=stars:%3E1&sort=stars&order=${this.sortType}&per_page=${this.pageSize}`,
-				goLang:`https://api.github.com/search/repositories?q=stars:%3E1+language:go&sort=stars&order=${this.sortType}&per_page=${this.pageSize}`
+			urls: {
+				all: `https://api.github.com/search/repositories?q=stars:%3E1&sort=stars&order=${this.sortType}&per_page=${this.pageSize}`,
+				goLang: `https://api.github.com/search/repositories?q=stars:%3E1+language:go&sort=stars&order=${this.sortType}&per_page=${this.pageSize}`
 			},
-			tagColors:{
-				typeScript:'#3178c6',
-				javaScript:'#f1e05a',
-				html:'#e34c26',
-				css:'#563d7c',
-				java:'orange',
-				python:'#3572A5',
-				golang:'#00ADD8',
-				go:'#00ADD8',
-				shell:'#89e051',
-				'c++':'#f34b7d',
-				other:'#ededed'
-			}
+			tagColors: {
+				typeScript: '#3178c6',
+				javaScript: '#f1e05a',
+				html: '#e34c26',
+				css: '#563d7c',
+				java: 'orange',
+				python: '#3572A5',
+				golang: '#00ADD8',
+				go: '#00ADD8',
+				shell: '#89e051',
+				'c++': '#f34b7d',
+				other: '#ededed'
+			},
+			loading:''
 		}
 	},
 	created() {
-		this.getHotProject();
+		this.getProject();
 	},
 	methods: {
 		handleNumber(number) {
@@ -95,32 +100,33 @@ export default {
 			}
 			return number;
 		},
-		getRequestUrl(language){
+		getRequestUrl(language) {
 			let url = this.urls['all'];
 			Object.keys(this.urls).forEach(key => {
-				if(key.toLowerCase() === language.toLowerCase()){
+				if (key.toLowerCase() === language.toLowerCase()) {
 					url = this.urls[key];
 				}
 			});
 			return url;
 		},
-		handleTagColor(language){
-			if(!language){
-				return '';
-			}
+		handleTagColor(language) {
 			let color = this.tagColors['other'];
+			if (!language) {
+				return color;
+			}
 			Object.keys(this.tagColors).forEach(key => {
-				if(key.toLowerCase() === language.toLowerCase()){
+				if (key.toLowerCase() === language.toLowerCase()) {
 					color = this.tagColors[key];
 				}
 			});
 			return color;
 		},
-		async getHotProject() {
+		async getProject() {
+			this.loading = 'el-icon-loading';
 			const url = this.getRequestUrl(this.language);
 			let response = await this.$axios.get(url);
-			this.projectList = response.items;
-			console.log(response);
+			this.projectList = this.projectList.concat(response.items);
+			this.loading = '';
 		}
 	}
 }
@@ -139,7 +145,7 @@ export default {
 		width: 100%;
 		color: #fff;
 		font-size: 20px;
-		line-height: 120px;
+		line-height: 80px;
 		padding-left: 10px;
 		box-sizing: border-box;
 		text-align: center;
@@ -178,7 +184,7 @@ export default {
 
 			.meta {
 				font-size: 12px;
-				color:#a7a3a3;
+				color: #a7a3a3;
 
 				i {
 					margin-right: 2px;
@@ -187,6 +193,22 @@ export default {
 				.forks {
 					margin: 0 8px;
 				}
+			}
+		}
+
+		.next-btn {
+			background-image: linear-gradient(0deg,
+					rgba(0, 0, 0, 0.3) 0,
+					transparent);
+			background-color: #0079d3;
+			color:#fff;
+			height:40px;
+			line-height:40px;
+			text-align: center;
+			cursor: pointer;
+			font-weight:600;
+			i{
+				margin-right:5px;
 			}
 		}
 	}
