@@ -43,11 +43,7 @@ func CreatePost(post *models.Post) (err error) {
 
 }
 
-/**
- * @Author huchao
- * @Description //TODO 根据Id查询帖子详情
- * @Date 21:39 2022/2/12
- **/
+// GetPostById 根据Id查询帖子详情
 func GetPostById(postID int64) (data *models.ApiPostDetail, err error) {
 	// 查询并组合我们接口想用的数据
 	// 查询帖子信息
@@ -80,7 +76,7 @@ func GetPostById(postID int64) (data *models.ApiPostDetail, err error) {
 		CommunityDetail: community,
 		AuthorName:      user.UserName,
 	}
-	return
+	return data, nil
 }
 
 // GetPostList 获取帖子列表

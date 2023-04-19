@@ -79,22 +79,7 @@ func PostList2Handler(c *gin.Context) {
 	ResponseSuccess(c, data)
 }
 
-/**
- * @Author huchao
- * @Description //TODO 根据Id查询帖子详情
- * @Date 17:44 2022/2/12
- **/
 // PostDetailHandler 根据Id查询帖子详情
-// @Summary 升级版帖子列表接口
-// @Description 可按社区按时间或分数排序查询帖子列表接口
-// @Tags 帖子相关接口
-// @Accept application/json
-// @Produce application/json
-// @Param Authorization header string true "Bearer 用户令牌"
-// @Param object query postId  path    int     true        "id"
-// @Security ApiKeyAuth
-// @Success 200 {object} _ResponsePostList
-// @Router /post/:id [get]
 func PostDetailHandler(c *gin.Context) {
 	// 1、获取参数(从URL中获取帖子的id)
 	postIdStr := c.Param("id")
