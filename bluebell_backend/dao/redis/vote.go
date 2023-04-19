@@ -118,22 +118,26 @@ func CreatePost(postID, userID uint64, title, summary string, CommunityID uint64
 
 	// 事务操作
 	pipeline := client.TxPipeline()
+	// 投票 zSet
 	pipeline.ZAdd(votedKey, redis.Z{ // 作者默认投赞成票
 		Score:  1,
 		Member: userID,
 	})
-	pipeline.Expire(votedKey, time.Second*OneWeekInSeconds) // 一周时间
-
+	pipeline.Expire(votedKey, time.Second*OneWeekInSeconds) // 过期时间：一周
+	// 文章 hash
 	pipeline.HMSet(KeyPostInfoHashPrefix+strconv.Itoa(int(postID)), postInfo)
-	pipeline.ZAdd(KeyPostScoreZSet, redis.Z{ // 添加到分数的ZSet
+	// 添加到分数 ZSet
+	pipeline.ZAdd(KeyPostScoreZSet, redis.Z{
 		Score:  now + VoteScore,
 		Member: postID,
 	})
-	pipeline.ZAdd(KeyPostTimeZSet, redis.Z{ // 添加到时间的ZSet
+	// 添加到时间 ZSet
+	pipeline.ZAdd(KeyPostTimeZSet, redis.Z{
 		Score:  now,
 		Member: postID,
 	})
-	pipeline.SAdd(communityKey, postID) // 添加到对应版块  把帖子添加到社区的set
+	// 添加到对应版块 把帖子添加到社区 set
+	pipeline.SAdd(communityKey, postID)
 	_, err = pipeline.Exec()
 	return
 }

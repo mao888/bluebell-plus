@@ -89,11 +89,7 @@ func Login(user *models.User) (err error) {
 	return nil
 }
 
-/**
- * @Author huchao
- * @Description //TODO 根据ID查询作者信息
- * @Date 22:05 2022/2/12
- **/
+// GetUserByID 根据ID查询作者信息
 func GetUserByID(id uint64) (user *models.User, err error) {
 	user = new(models.User)
 	sqlStr := `select user_id, username from user where user_id = ?`

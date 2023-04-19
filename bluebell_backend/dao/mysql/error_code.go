@@ -8,7 +8,7 @@ var (
 	ErrorUserNotExit   = "用户不已存在"
 	ErrorPasswordWrong = "密码错误"
 	ErrorGenIDFailed   = errors.New("创建用户ID失败")
-	ErrorInvalidID     = errors.New("无效的ID")
-	ErrorQueryFailed   = errors.New("查询数据失败")
+	ErrorInvalidID     = "无效的ID"
+	ErrorQueryFailed   = "查询数据失败"
 	ErrorInsertFailed  = errors.New("插入数据失败")
 )

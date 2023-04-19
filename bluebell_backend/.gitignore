@@ -21,4 +21,6 @@ vendor/
 .idea
 tmp
 
+*.yaml
+
 bluebell_backend

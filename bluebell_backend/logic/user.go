@@ -5,7 +5,6 @@ import (
 	"bluebell_backend/models"
 	"bluebell_backend/pkg/jwt"
 	"bluebell_backend/pkg/snowflake"
-	//"go.uber.org/zap"
 )
 
 // SignUp 注册业务逻辑
