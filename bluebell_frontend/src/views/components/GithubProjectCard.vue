@@ -4,7 +4,7 @@
 			<el-card :body-style="{ padding: 0, border: 'none' }" class="box-card">
 				<h2 class="title">{{ title }}</h2>
 				<ul class="github-hot-project-list">
-					<li class="github-hot-project-item" v-for="project in projectList" :key="project.id">
+					<li class="github-hot-project-item" v-for="project in projectList" :key="project.owner.id">
 						<div class="user-info">
 							<div class="avatar">
 								<el-avatar size="small" :src="project.owner.avatar_url"></el-avatar>
@@ -30,7 +30,7 @@
 						</div>
 						<el-divider></el-divider>
 					</li>
-					<div class="next-btn" v-if="projectList.length > 0" @click="getProject">
+					<div class="next-btn" v-if="projectList.length > 0" @click="getMoreProject">
 						<i :class="loading"></i>
 						<span>加载更多...</span>
 					</div>
@@ -68,11 +68,8 @@ export default {
 	},
 	data() {
 		return {
+			pageNumber:1,
 			projectList: [],
-			urls: {
-				all: `https://api.github.com/search/repositories?q=stars:%3E1&sort=stars&order=${this.sortType}&per_page=${this.pageSize}`,
-				goLang: `https://api.github.com/search/repositories?q=stars:%3E1+language:go&sort=stars&order=${this.sortType}&per_page=${this.pageSize}`
-			},
 			tagColors: {
 				typeScript: '#3178c6',
 				javaScript: '#f1e05a',
@@ -86,7 +83,7 @@ export default {
 				'c++': '#f34b7d',
 				other: '#ededed'
 			},
-			loading:''
+			loading: '',
 		}
 	},
 	created() {
@@ -101,10 +98,14 @@ export default {
 			return number;
 		},
 		getRequestUrl(language) {
-			let url = this.urls['all'];
-			Object.keys(this.urls).forEach(key => {
+			const urls = {
+				all: `https://api.github.com/search/repositories?q=stars:%3E1&sort=stars&order=${this.sortType}&per_page=${this.pageSize}&page=${this.pageNumber}`,
+				goLang: `https://api.github.com/search/repositories?q=stars:%3E1+language:go&sort=stars&order=${this.sortType}&per_page=${this.pageSize}&page=${this.pageNumber}`
+			};
+			let url = urls['all'];
+			Object.keys(urls).forEach(key => {
 				if (key.toLowerCase() === language.toLowerCase()) {
-					url = this.urls[key];
+					url = urls[key];
 				}
 			});
 			return url;
@@ -122,12 +123,18 @@ export default {
 			return color;
 		},
 		async getProject() {
-			this.loading = 'el-icon-loading';
 			const url = this.getRequestUrl(this.language);
 			let response = await this.$axios.get(url);
-			this.projectList = this.projectList.concat(response.items);
+			this.projectList = response.items;
+		},
+		async getMoreProject() {
+			this.loading = 'el-icon-loading';
+			this.pageNumber += 1;
+			const url = this.getRequestUrl(this.language);
+			let response = await this.$axios.get(url);
+			this.projectList = [...new Set(this.projectList.concat(response.items))];
 			this.loading = '';
-		}
+		},
 	}
 }
 </script>
@@ -201,14 +208,15 @@ export default {
 					rgba(0, 0, 0, 0.3) 0,
 					transparent);
 			background-color: #0079d3;
-			color:#fff;
-			height:40px;
-			line-height:40px;
+			color: #fff;
+			height: 40px;
+			line-height: 40px;
 			text-align: center;
 			cursor: pointer;
-			font-weight:600;
-			i{
-				margin-right:5px;
+			font-weight: 600;
+
+			i {
+				margin-right: 5px;
 			}
 		}
 	}
