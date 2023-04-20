@@ -16,7 +16,7 @@ func GetCommunityList() (communityList []*models.Community, err error) {
 		zap.L().Warn("there is no community in db")
 		err = nil
 	}
-	return
+	return communityList, nil
 }
 
 func GetCommunityNameByID(idStr string) (community *models.Community, err error) {
