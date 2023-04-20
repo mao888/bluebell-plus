@@ -13,7 +13,7 @@
           <i class="iconfont icon-top"></i>Score
         </div>
         <div class="btn-publish">
-          <div class="word-of-day" v-html="wordOfDay"></div>
+          <div class="word-of-day" @click="getWordOfDay" :title="wordOfDay">{{ wordOfDay }}</div>
           <div class="publish" @click="goPublish">发表</div>
         </div>
       </div>
@@ -70,10 +70,10 @@ export default {
       order: "time",
       page: 1,
       postList: [],
-      wordOfDay:''
+      wordOfDay: ''
     };
   },
-  created(){
+  created() {
     this.getWordOfDay();
   },
   methods: {
@@ -128,9 +128,10 @@ export default {
           console.log(error);
         });
     },
-    async getWordOfDay(){
+    async getWordOfDay() {
       let response = await this.$axios.get(`https://v.api.aa1.cn/api/yiyan/index.php`);
-      this.wordOfDay = response;
+      const reg = '<p>(.*)</p>';
+      this.wordOfDay = response.match(reg)[1];
     }
   },
   mounted: function () {
@@ -233,14 +234,24 @@ export default {
 
       .btn-publish {
         height: 32px;
-        width: 100%;
+        width:78%;
         display: flex;
+        position:relative;
+        border-radius: 4px;
 
         .word-of-day {
+          width:87%;
           line-height: 32px;
-          text-indent: 1rem;
+          font-size: 14px;
           overflow: hidden;
-          font-size:12px;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          background-image: linear-gradient(to right, orange, purple);
+          -webkit-background-clip: text;
+          color: transparent;
+          text-align:center;
+          cursor: pointer;
+          margin-left:1rem;
         }
 
         .publish {
@@ -255,6 +266,8 @@ export default {
           text-align: center;
           margin-left: auto;
           cursor: pointer;
+          position:absolute;
+          right:0;
         }
       }
 
