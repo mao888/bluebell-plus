@@ -13,7 +13,7 @@
           <i class="iconfont icon-top"></i>Score
         </div>
         <div class="btn-publish">
-          <div class="word-of-day" @click="getWordOfDay">{{ wordOfDay }}</div>
+          <div class="word-of-day" @click="getWordOfDay" :title="wordOfDay">{{ wordOfDay }}</div>
           <div class="publish" @click="goPublish">发表</div>
         </div>
       </div>
@@ -130,7 +130,7 @@ export default {
     },
     async getWordOfDay() {
       let response = await this.$axios.get(`https://v.api.aa1.cn/api/yiyan/index.php`);
-      const reg = "<p>(.*)</p>";
+      const reg = '<p>(.*)</p>';
       this.wordOfDay = response.match(reg)[1];
     }
   },
@@ -242,9 +242,7 @@ export default {
         .word-of-day {
           width:87%;
           line-height: 32px;
-          text-indent: 1rem;
-          overflow: hidden;
-          font-size: 12px;
+          font-size: 14px;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
@@ -253,6 +251,7 @@ export default {
           color: transparent;
           text-align:center;
           cursor: pointer;
+          margin-left:1rem;
         }
 
         .publish {
