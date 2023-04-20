@@ -2,9 +2,9 @@
 	<div>
 		<el-card>
 			<div slot="header" class="clearfix">
-				<span class="web-status">🚀 网站状况</span>
+				<div class="web-status">🚀 网站状况</div>
 			</div>
-			<span class="run-time"></span>
+			<div class="run-time"></div>
 		</el-card>
 	</div>
 </template>
@@ -37,11 +37,13 @@ export default {
 <style lang="less" scoped>
 .web-status {
 	font-weight: 600;
+	text-align: center;
 }
 
 .run-time {
 	background-image: linear-gradient(to right, orange, purple);
 	-webkit-background-clip: text;
 	color: transparent;
+	text-align: center;
 }
 </style>

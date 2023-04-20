@@ -12,7 +12,10 @@
         <div class="top btn-iconfont" :class="{ active: scoreOrder }" @click="selectOrder('score')">
           <i class="iconfont icon-top"></i>Score
         </div>
-        <button class="btn-publish" @click="goPublish">发表</button>
+        <div class="btn-publish">
+          <div class="word-of-day" v-html="wordOfDay"></div>
+          <div class="publish" @click="goPublish">发表</div>
+        </div>
       </div>
       <ul class="c-l-list">
         <li class="c-l-item" v-for="post in postList" :key="post.id">
@@ -61,13 +64,17 @@ import TimeMeter from '../components/TimeMeter.vue';
 import GithubProjectCard from './components/GithubProjectCard.vue';
 export default {
   name: "Home",
-  components: { TimeMeter, SideBar ,GithubProjectCard},
+  components: { TimeMeter, SideBar, GithubProjectCard },
   data() {
     return {
       order: "time",
       page: 1,
       postList: [],
+      wordOfDay:''
     };
+  },
+  created(){
+    this.getWordOfDay();
   },
   methods: {
     selectOrder(order) {
@@ -120,6 +127,10 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    async getWordOfDay(){
+      let response = await this.$axios.get(`https://v.api.aa1.cn/api/yiyan/index.php`);
+      this.wordOfDay = response;
     }
   },
   mounted: function () {
@@ -155,7 +166,7 @@ export default {
 
   .left {
     width: 312px;
-    height:fit-content;
+    height: fit-content;
     margin-top: 28px;
     background: #fff;
     border-radius: 4px;
@@ -221,17 +232,30 @@ export default {
       }
 
       .btn-publish {
-        width: 64px;
         height: 32px;
-        line-height: 32px;
-        background-color: #54b351;
-        color: #ffffff;
-        border: 1px solid transparent;
-        border-radius: 4px;
-        box-sizing: border-box;
-        text-align: center;
-        margin-left: auto;
-        cursor: pointer;
+        width: 100%;
+        display: flex;
+
+        .word-of-day {
+          line-height: 32px;
+          text-indent: 1rem;
+          overflow: hidden;
+          font-size:12px;
+        }
+
+        .publish {
+          width: 64px;
+          height: 100%;
+          line-height: 32px;
+          background-color: #54b351;
+          color: #ffffff;
+          border: 1px solid transparent;
+          border-radius: 4px;
+          box-sizing: border-box;
+          text-align: center;
+          margin-left: auto;
+          cursor: pointer;
+        }
       }
 
       .sort {
@@ -353,8 +377,9 @@ export default {
     .run-time-container {
       margin-bottom: 1rem;
     }
-    .github-project-card-container{
-      margin:1rem 0;
+
+    .github-project-card-container {
+      margin: 1rem 0;
     }
   }
 }

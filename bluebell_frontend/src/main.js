@@ -44,6 +44,10 @@ router.beforeEach((to, from, next) => {
   }
 })
 
+router.afterEach(() => {
+  document.title = "Gophers";
+})
+
 new Vue({
   router,
   store,

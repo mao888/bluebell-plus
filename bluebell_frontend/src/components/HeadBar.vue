@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-      <span class="logo" @click="goIndex">风铃草论坛</span>
+      <span class="logo" @click="goIndex">Golang编程论坛</span>
     <div class="search">
       <label class="s-logo"></label>
       <input type="text" class="s-input" placeholder="搜索" />
