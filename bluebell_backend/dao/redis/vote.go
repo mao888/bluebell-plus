@@ -67,9 +67,11 @@ func VoteForPost(userID string, postID string, v float64) (err error) {
 	} else {
 		op = -1
 	}
-	diffAbs := math.Abs(ov - v)                                                        // 计算两次投票的差值
-	pipeline := client.TxPipeline()                                                    // 事务操作
-	_, err = pipeline.ZIncrBy(KeyPostScoreZSet, VoteScore*diffAbs*op, postID).Result() // 更新分数
+	diffAbs := math.Abs(ov - v)                // 计算两次投票的差值
+	pipeline := client.TxPipeline()            // 事务操作
+	incrementScore := VoteScore * diffAbs * op // 计算分数（新增）
+	// ZIncrBy 用于将有序集合中的成员分数增加指定数量
+	_, err = pipeline.ZIncrBy(KeyPostScoreZSet, incrementScore, postID).Result() // 更新分数
 	if err != nil {
 		return err
 	}
@@ -82,6 +84,7 @@ func VoteForPost(userID string, postID string, v float64) (err error) {
 			Member: userID,
 		})
 	}
+	// 4、
 
 	//switch math.Abs(ov) - math.Abs(v) {
 	//case 1:
