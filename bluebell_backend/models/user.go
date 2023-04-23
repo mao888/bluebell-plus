@@ -75,11 +75,7 @@ func (r *RegisterForm) UnmarshalJSON(data []byte) (err error) {
 	return
 }
 
-/**
- * @Author huchao
- * @Description //TODO 投票数据
- * @Date 11:01 2022/2/14
- **/
+// VoteDataForm 投票数据
 type VoteDataForm struct {
 	//UserID int 从请求中获取当前的用户
 	PostID    string `json:"post_id" binding:"required"`              // 帖子id

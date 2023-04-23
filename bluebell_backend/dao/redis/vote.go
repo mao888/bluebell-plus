@@ -9,9 +9,9 @@ import (
 )
 
 const (
-	OneWeekInSeconds         = 7 * 24 * 3600
-	VoteScore        float64 = 432 // 每一票的值432分
-	PostPerAge               = 20
+	OneWeekInSeconds         = 7 * 24 * 3600 // 一周的秒数
+	VoteScore        float64 = 432           // 每一票的值432分
+	PostPerAge               = 20            // 每页显示20条帖子
 )
 
 /*
@@ -41,11 +41,13 @@ v=-1时，有两种情况
 	1、到期之后将redis中保存的赞成票数及反对票数存储到mysql表中
 	2、到期之后删除那个 KeyPostVotedZSetPrefix
 */
+
+// VoteForPost	为帖子投票
 func VoteForPost(userID string, postID string, v float64) (err error) {
 	// 1.判断投票限制
 	// 去redis取帖子发布时间
 	postTime := client.ZScore(KeyPostTimeZSet, postID).Val()
-	if float64(time.Now().Unix())-postTime > OneWeekInSeconds { // Unix()时间戳
+	if float64(time.Now().Unix())-postTime > OneWeekInSeconds { // 超过一个星期就不允许投票了
 		// 不允许投票了
 		return ErrorVoteTimeExpire
 	}
@@ -57,7 +59,7 @@ func VoteForPost(userID string, postID string, v float64) (err error) {
 
 	// 更新：如果这一次投票的值和之前保存的值一致，就提示不允许重复投票
 	if v == ov {
-		return ErrVoteRepested
+		return ErrVoteRepeated
 	}
 	var op float64
 	if v > ov {
@@ -68,7 +70,7 @@ func VoteForPost(userID string, postID string, v float64) (err error) {
 	diffAbs := math.Abs(ov - v)                                                        // 计算两次投票的差值
 	pipeline := client.TxPipeline()                                                    // 事务操作
 	_, err = pipeline.ZIncrBy(KeyPostScoreZSet, VoteScore*diffAbs*op, postID).Result() // 更新分数
-	if ErrorVoteTimeExpire != nil {
+	if err != nil {
 		return err
 	}
 	// 3、记录用户为该帖子投票的数据

@@ -1,8 +1,3 @@
-/**
-    @author:huchao
-    @data:2022/2/14
-    @note: 投票
-**/
 package logic
 
 import (
@@ -21,7 +16,7 @@ import (
 */
 
 /* PostVote 为帖子投票
-投票分为四种情况：1.投赞成票 2.投反对票 3.取消投票 4.反转投票
+投票分为四种情况：1.投赞成票(1) 2.投反对票(-1) 3.取消投票(0) 4.反转投票
 
 记录文章参与投票的人
 更新文章分数：赞成票要加分；反对票减分
@@ -42,15 +37,11 @@ v=-1时，有两种情况
 	2、到期之后删除那个 KeyPostVotedZSetPrefix
 */
 
-/**
- * @Author huchao
- * @Description //TODO 投票功能
- * @Date 11:35 2022/2/14
- **/
-func VoteForPost(userId uint64,p *models.VoteDataForm) error {
+// VoteForPost 投票功能 为帖子投票
+func VoteForPost(userId uint64, p *models.VoteDataForm) error {
 	zap.L().Debug("VoteForPost",
-		zap.Uint64("userId",userId),
+		zap.Uint64("userId", userId),
 		zap.String("postId", p.PostID),
-		zap.Int8("Direction",p.Direction))
+		zap.Int8("Direction", p.Direction))
 	return redis.VoteForPost(strconv.Itoa(int(userId)), p.PostID, float64(p.Direction))
 }
