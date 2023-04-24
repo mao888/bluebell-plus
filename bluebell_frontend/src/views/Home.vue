@@ -120,6 +120,7 @@ export default {
         .then(response => {
           if (response.code == 1000) {
             console.log("vote success");
+            this.getPostList();
           } else {
             console.log(response.msg);
           }
