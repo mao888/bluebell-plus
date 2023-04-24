@@ -62,6 +62,7 @@ import SideBar from '../components/SideBar.vue';
 // @ is an alias to /src
 import TimeMeter from '../components/TimeMeter.vue';
 import GithubProjectCard from './components/GithubProjectCard.vue';
+import Vue from 'vue';
 export default {
   name: "Home",
   components: { TimeMeter, SideBar, GithubProjectCard },
@@ -121,6 +122,8 @@ export default {
           if (response.code == 1000) {
             console.log("vote success");
             this.getPostList();
+          } else if (response.code == 1009) {
+            Vue.prototype.$message.error('请勿重复投票')
           } else {
             console.log(response.msg);
           }
