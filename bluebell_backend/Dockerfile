@@ -35,14 +35,14 @@ COPY ./conf /conf
 # 从builder镜像中把可执行文件拷贝到当前目录
 COPY --from=builder /build/bluebell_app /
 
-RUN set -eux \
-
-    && apt-get update \
-    && apt-get install -y --no-install-recommends netcat \
-    && chmod 755 wait-for.sh
+#RUN set -eux \
+#
+#    && apt-get update \
+#    && apt-get install -y --no-install-recommends netcat \
+#    && chmod 755 wait-for.sh
 
 # 声明服务端口
 EXPOSE 8081
 
 # 需要运行的命令
-#ENTRYPOINT ["/bluebell_app", "conf/config.yaml"]
+ENTRYPOINT ["/bluebell_app", "conf/config.yaml"]
