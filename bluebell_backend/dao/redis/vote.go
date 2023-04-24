@@ -84,7 +84,8 @@ func VoteForPost(userID string, postID string, v float64) (err error) {
 			Member: userID,
 		})
 	}
-	// 4、
+	// 4、更新帖子的投票数
+	pipeline.HIncrBy(KeyPostInfoHashPrefix+postID, "votes", int64(op))
 
 	//switch math.Abs(ov) - math.Abs(v) {
 	//case 1:
