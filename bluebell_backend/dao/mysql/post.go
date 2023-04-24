@@ -4,15 +4,15 @@ import (
 	"bluebell_backend/models"
 	"database/sql"
 	"errors"
-	"strings"
-
 	"github.com/jmoiron/sqlx"
+	"strings"
 
 	"go.uber.org/zap"
 )
 
 // CreatePost 创建帖子
 func CreatePost(post *models.Post) (err error) {
+
 	sqlStr := `insert into post(
 	post_id, title, content, author_id, community_id)
 	values(?,?,?,?,?)`
