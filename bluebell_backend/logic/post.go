@@ -158,13 +158,13 @@ func GetPostList2(p *models.ParamPostList) (data []*models.ApiPostDetail, err er
 			continue
 		}
 		// 接口数据拼接
-		postdetail := &models.ApiPostDetail{
+		postDetail := &models.ApiPostDetail{
 			VoteNum:         voteData[idx],
 			Post:            post,
 			CommunityDetail: community,
 			AuthorName:      user.UserName,
 		}
-		data = append(data, postdetail)
+		data = append(data, postDetail)
 	}
 	return
 }

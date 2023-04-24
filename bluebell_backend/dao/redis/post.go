@@ -29,29 +29,29 @@ func GetPostIDsInOrder(p *models.ParamPostList) ([]string, error) {
 
 // GetPostVoteData 根据ids查询每篇帖子的投赞成票的数据
 func GetPostVoteData(ids []string) (data []int64, err error) {
-	//data = make([]int64, 0, len(ids))
-	//for _, id := range ids{
-	//	key := KeyPostVotedZSetPrefix + id
-	//	// 查找key中分数是1的元素数量 -> 统计每篇帖子的赞成票的数量
-	//	v := client.ZCount(key, "1", "1").Val()
-	//	data = append(data, v)
-	//}
-	// 使用 pipeline一次发送多条命令减少RTT
-	pipeline := client.Pipeline()
+	data = make([]int64, 0, len(ids))
 	for _, id := range ids {
-		key := KeyCommunityPostSetPrefix + id
-		pipeline.ZCount(key, "1", "1")
-	}
-	cmders, err := pipeline.Exec()
-	if err != nil {
-		return nil, err
-	}
-	data = make([]int64, 0, len(cmders))
-	for _, cmder := range cmders {
-		v := cmder.(*redis.IntCmd).Val()
+		key := KeyPostVotedZSetPrefix + id
+		// 查找key中分数是1的元素数量 -> 统计每篇帖子的赞成票的数量
+		v := client.ZCount(key, "1", "1").Val()
 		data = append(data, v)
 	}
-	return
+	// 使用 pipeline一次发送多条命令减少RTT
+	//pipeline := client.Pipeline()
+	//for _, id := range ids {
+	//	key := KeyCommunityPostSetPrefix + id
+	//	pipeline.ZCount(key, "1", "1") // ZCount会返回分数在min和max范围内的成员数量
+	//}
+	//cmders, err := pipeline.Exec()
+	//if err != nil {
+	//	return nil, err
+	//}
+	//data = make([]int64, 0, len(cmders))
+	//for _, cmder := range cmders {
+	//	v := cmder.(*redis.IntCmd).Val()
+	//	data = append(data, v)
+	//}
+	return data, nil
 }
 
 /**
