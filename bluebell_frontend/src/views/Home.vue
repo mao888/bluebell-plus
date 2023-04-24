@@ -25,10 +25,10 @@
             </a>
             <span class="text">{{ post.vote_num }}</span>
             <a class="vote">
-              <span class="iconfont icon-down" @click="vote(post.id, -1)"></span>
+              <span class="iconfont icon-down" @click="vote(post.post_id, -1)"></span>
             </a>
           </div>
-          <div class="l-container" @click="goDetail(post.id)">
+          <div class="l-container" @click="goDetail(post.post_id)">
             <h4 class="con-title">{{ post.title }}</h4>
             <div class="con-memo">
               <p>{{ post.content }}</p>
