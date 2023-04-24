@@ -18,14 +18,14 @@
         </div>
       </div>
       <ul class="c-l-list">
-        <li class="c-l-item" v-for="post in postList" :key="post.id">
+        <li class="c-l-item" v-for="post in postList" :key="post.post_id">
           <div class="post">
             <a class="vote">
-              <span class="iconfont icon-up" @click="vote(post.id, '1')"></span>
+              <span class="iconfont icon-up" @click="vote(post.post_id, 1)"></span>
             </a>
             <span class="text">{{ post.vote_num }}</span>
             <a class="vote">
-              <span class="iconfont icon-down" @click="vote(post.id, '-1')"></span>
+              <span class="iconfont icon-down" @click="vote(post.id, -1)"></span>
             </a>
           </div>
           <div class="l-container" @click="goDetail(post.id)">
@@ -112,10 +112,10 @@ export default {
       this.$axios({
         method: "post",
         url: "/vote",
-        data: JSON.stringify({
+        data: {
           post_id: post_id,
           direction: direction,
-        })
+        }
       })
         .then(response => {
           if (response.code == 1000) {
