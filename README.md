@@ -49,7 +49,9 @@
 
 ## 项目预览图
 
-[![bCORoR.png](https://s4.ax1x.com/2022/02/23/bCORoR.png)](https://imgtu.com/i/bCORoR)
+[//]: # ([![bCORoR.png]&#40;https://s4.ax1x.com/2022/02/23/bCORoR.png&#41;]&#40;https://imgtu.com/i/bCORoR&#41;)
+
+[![image.png](https://i.postimg.cc/brRyjhPL/image.png)](https://postimg.cc/zHVZn4VR)
 
 ## 项目全套笔记
 
