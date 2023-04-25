@@ -70,11 +70,15 @@ func GetPostById(postID int64) (data *models.ApiPostDetail, err error) {
 			zap.Error(err))
 		return
 	}
+	// 根据帖子id查询帖子的投票数
+	voteNum, err := redis.GetPostVoteNum(postID)
+
 	// 接口数据拼接
 	data = &models.ApiPostDetail{
 		Post:            post,
 		CommunityDetail: community,
 		AuthorName:      user.UserName,
+		VoteNum:         voteNum,
 	}
 	return data, nil
 }

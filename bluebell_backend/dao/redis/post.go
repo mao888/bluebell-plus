@@ -54,6 +54,14 @@ func GetPostVoteData(ids []string) (data []int64, err error) {
 	return data, nil
 }
 
+// GetPostVoteNum 根据id查询每篇帖子的投赞成票的数据
+func GetPostVoteNum(ids int64) (data int64, err error) {
+	key := KeyPostVotedZSetPrefix + strconv.Itoa(int(ids))
+	// 查找key中分数是1的元素数量 -> 统计每篇帖子的赞成票的数量
+	data = client.ZCount(key, "1", "1").Val()
+	return data, nil
+}
+
 /**
  * @Author huchao
  * @Description //TODO 按社区查询ids(查询出的ids已经根据order从大到小排序)

@@ -29,7 +29,7 @@ func CreatePost(post *models.Post) (err error) {
 // GetPostByID 根据Id查询帖子详情
 func GetPostByID(pid int64) (post *models.Post, err error) {
 	post = new(models.Post)
-	sqlStr := `select post_id, title, content, author_id, community_id, create_time
+	sqlStr := `select post_id, title, content, author_id, community_id, status, create_time, update_time
 	from post
 	where post_id = ?`
 	err = db.Get(post, sqlStr, pid)
