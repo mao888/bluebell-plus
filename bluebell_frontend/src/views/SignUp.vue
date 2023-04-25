@@ -3,17 +3,27 @@
     <div class="container">
       <h2 class="form-title">注册</h2>
       <div class="form-group">
-        <label for="name">用户名</label>
-        <input type="text" class="form-control" name="name" id="name" placeholder="用户名" v-model="username" />
+        <label for="name"><span style="color:red;">* </span>用户名</label>
+        <el-input type="text" required name="name" id="name" placeholder="用户名" v-model="username" />
       </div>
       <div class="form-group">
-        <label for="pass">密码</label>
-        <input type="password" class="form-control" name="pass" id="pass" placeholder="密码" v-model="password" />
+        <label for="email"><span style="color:red;">* </span>邮箱</label>
+        <el-input type="email" required name="email" id="email" placeholder="请输入邮箱" v-model="email" />
       </div>
       <div class="form-group">
-        <label for="re_pass">确认密码</label>
-        <input type="password" class="form-control" name="re_pass" id="re_pass" placeholder="确认密码"
-          v-model="re_password" />
+        <label for="pass"><span style="color:red;">* </span>密码</label>
+        <el-input type="password" required name="pass" id="pass" placeholder="密码" v-model="password" />
+      </div>
+      <div class="form-group">
+        <label for="re_pass"><span style="color:red;">* </span>确认密码</label>
+        <el-input type="password" required name="re_pass" id="re_pass" placeholder="确认密码" v-model="re_password" />
+      </div>
+      <div class="form-group">
+        <label for="gender"><span style="color:red;">* </span>性别</label>
+        <div id="gender">
+          <el-radio v-model="gender" :label="1">男</el-radio>
+          <el-radio v-model="gender" :label="2">女</el-radio>
+        </div>
       </div>
       <div class="form-btn">
         <button type="button" class="btn btn-info" @click="submit">提交</button>
@@ -29,6 +39,8 @@ export default {
     return {
       username: "",
       password: "",
+      email: '',
+      gender: 1,
       confirm_password: "",
       submitted: false
     };
@@ -45,6 +57,8 @@ export default {
         url: '/signup',
         data: {
           username: this.username,
+          email: this.email,
+          gender: this.gender,
           password: this.password,
           confirm_password: this.re_password
         }
@@ -97,19 +111,19 @@ export default {
         font-weight: 700;
       }
 
-      .form-control {
-        display: block;
-        width: 100%;
-        height: 34px;
-        padding: 6px 12px;
-        font-size: 14px;
-        line-height: 1.42857143;
-        color: #555;
-        background-color: #fff;
-        background-image: none;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-      }
+      // .form-control {
+      //   display: block;
+      //   width: 100%;
+      //   height: 34px;
+      //   padding: 6px 12px;
+      //   font-size: 14px;
+      //   line-height: 1.42857143;
+      //   color: #555;
+      //   background-color: #fff;
+      //   background-image: none;
+      //   border: 1px solid #ccc;
+      //   border-radius: 4px;
+      // }
     }
 
     .form-btn {
@@ -140,4 +154,5 @@ export default {
       }
     }
   }
-}</style>
+}
+</style>
