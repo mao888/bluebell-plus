@@ -26,6 +26,8 @@ func SignUp(p *models.RegisterForm) (error error) {
 		UserID:   userId,
 		UserName: p.UserName,
 		Password: p.Password,
+		Email:    p.Email,
+		Gender:   p.Gender,
 	}
 	// 3、保存进数据库
 	return mysql.InsertUser(u)

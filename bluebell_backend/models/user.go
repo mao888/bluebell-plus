@@ -5,15 +5,13 @@ import (
 	"errors"
 )
 
-/**
- * @Author huchao
- * @Description //TODO 定义请求参数结构体
- * @Date 22:09 2022/2/10
- **/
+// User 定义请求参数结构体
 type User struct {
 	UserID       uint64 `json:"user_id,string" db:"user_id"` // 指定json序列化/反序列化时使用小写user_id
 	UserName     string `json:"username" db:"username"`
 	Password     string `json:"password" db:"password"`
+	Email        string `json:"email" db:"gender"`  // 邮箱
+	Gender       int    `json:"gender" db:"gender"` // 性别
 	AccessToken  string
 	RefreshToken string
 }
@@ -23,6 +21,8 @@ func (u *User) UnmarshalJSON(data []byte) (err error) {
 	required := struct {
 		UserName string `json:"username" db:"username"`
 		Password string `json:"password" db:"password"`
+		Email    string `json:"email" db:"gender"`  // 邮箱
+		Gender   int    `json:"gender" db:"gender"` // 性别
 	}{}
 	err = json.Unmarshal(data, &required)
 	if err != nil {
@@ -34,14 +34,18 @@ func (u *User) UnmarshalJSON(data []byte) (err error) {
 	} else {
 		u.UserName = required.UserName
 		u.Password = required.Password
+		u.Email = required.Email
+		u.Gender = required.Gender
 	}
 	return
 }
 
 // RegisterForm 注册请求参数
 type RegisterForm struct {
-	UserName        string `json:"username" binding:"required"`
-	Password        string `json:"password" binding:"required"`
+	UserName        string `json:"username" binding:"required"`  // 用户名
+	Email           string `json:"email" binding:"required"`     // 邮箱
+	Gender          int    `json:"gender" binding:"oneof=0 1 2"` // 性别 0:未知 1:男 2:女
+	Password        string `json:"password" binding:"required"`  // 密码
 	ConfirmPassword string `json:"confirm_password" binding:"required,eqfield=Password"`
 }
 
@@ -55,7 +59,9 @@ type LoginForm struct {
 func (r *RegisterForm) UnmarshalJSON(data []byte) (err error) {
 	required := struct {
 		UserName        string `json:"username"`
-		Password        string `json:"password"`
+		Email           string `json:"email"`    // 邮箱
+		Gender          int    `json:"gender"`   // 性别 0:未知 1:男 2:女
+		Password        string `json:"password"` // 密码
 		ConfirmPassword string `json:"confirm_password"`
 	}{}
 	err = json.Unmarshal(data, &required)
@@ -65,10 +71,14 @@ func (r *RegisterForm) UnmarshalJSON(data []byte) (err error) {
 		err = errors.New("缺少必填字段username")
 	} else if len(required.Password) == 0 {
 		err = errors.New("缺少必填字段password")
+	} else if len(required.Email) == 0 {
+		err = errors.New("缺少必填字段email")
 	} else if required.Password != required.ConfirmPassword {
 		err = errors.New("两次密码不一致")
 	} else {
 		r.UserName = required.UserName
+		r.Email = required.Email
+		r.Gender = required.Gender
 		r.Password = required.Password
 		r.ConfirmPassword = required.ConfirmPassword
 	}

@@ -39,8 +39,8 @@ func InsertUser(user models.User) (error error) {
 	// 对密码进行加密
 	user.Password = encryptPassword([]byte(user.Password))
 	// 执行SQL语句入库
-	sqlstr := `insert into user(user_id,username,password) values(?,?,?)`
-	_, err := db.Exec(sqlstr, user.UserID, user.UserName, user.Password)
+	sqlstr := `insert into user(user_id,username,password,email,gender) values(?,?,?,?,?)`
+	_, err := db.Exec(sqlstr, user.UserID, user.UserName, user.Password, user.Email, user.Gender)
 	return err
 }
 

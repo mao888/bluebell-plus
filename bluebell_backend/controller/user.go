@@ -18,7 +18,6 @@ import (
 func SignUpHandler(c *gin.Context) {
 	// 1.获取请求参数
 	var fo *models.RegisterForm
-
 	// 2.校验数据有效性
 	if err := c.ShouldBindJSON(&fo); err != nil {
 		// 请求参数有误，直接返回响应
@@ -34,7 +33,7 @@ func SignUpHandler(c *gin.Context) {
 		ResponseErrorWithMsg(c, CodeInvalidParams, removeTopStruct(errs.Translate(trans)))
 		return // 翻译错误
 	}
-
+	fmt.Printf("fo: %v\n", fo)
 	// 3.业务处理 —— 注册用户
 	if err := logic.SignUp(fo); err != nil {
 		zap.L().Error("logic.signup failed", zap.Error(err))
