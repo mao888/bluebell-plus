@@ -53,7 +53,10 @@ EXPOSE 8081
 ENTRYPOINT ["/bluebell_app", "conf/config.yaml"]
 ```
 **构建镜像**
-> docker build -t bluebell_app
+> docker build -t bluebell_app .
 
 **启动容器**
 > docker run -d -p 8081:8081 --name bluebell_app bluebell_app
+
+**查看容器日志**
+> docker logs -f bluebell_app
