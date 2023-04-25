@@ -4,11 +4,11 @@
       <div class="container">
         <div class="post">
           <a class="vote">
-            <span class="iconfont icon-up"></span>
+            <span class="iconfont icon-up" @click="vote(post.post_id, 1)"></span>
           </a>
-          <span class="text">50.2k</span>
+          <span class="text">{{ post.vote_num }}</span>
           <a class="vote">
-            <span class="iconfont icon-down"></span>
+            <span class="iconfont icon-down" @click="vote(post.post_id, -1)"></span>
           </a>
         </div>
         <div class="l-container">
@@ -47,9 +47,9 @@
         <h5 class="t-header"></h5>
         <div class="t-info">
           <a class="avatar"></a>
-          <span class="topic-name">b/{{post.community_name}}</span>
+          <span class="topic-name">b/{{ post.community.community_name }}</span>
         </div>
-        <p class="t-desc">树洞 树洞 无限树洞的树洞</p>
+        <p class="t-desc">{{post.community.introduction}}</p>
         <ul class="t-num">
           <li class="t-num-item">
             <p class="number">5.2m</p>
@@ -60,7 +60,7 @@
             <span class="unit">Members</span>
           </li>
         </ul>
-        <div class="date">Created Apr 10, 2008</div>
+        <div class="date">{{create_time}}</div>
         <button class="topic-btn">JOIN</button>
       </div>
     </div>
@@ -68,18 +68,19 @@
 </template>
 
 <script>
+import Vue from 'vue';
 export default {
   name: "Content",
-  data(){
+  data() {
     return {
-      post:{},
+      post: {},
     }
   },
-  methods:{
+  methods: {
     getPostDetail() {
       this.$axios({
         method: "get",
-        url: "/post/"+ this.$route.params.id,
+        url: "/post/" + this.$route.params.id,
       })
         .then(response => {
           console.log(1, response.data);
@@ -93,8 +94,31 @@ export default {
           console.log(error);
         });
     },
+    vote(post_id, direction) {
+      this.$axios({
+        method: "post",
+        url: "/vote",
+        data: {
+          post_id: post_id,
+          direction: direction,
+        }
+      })
+        .then(response => {
+          if (response.code == 1000) {
+            console.log("vote success");
+            this.getPostDetail();
+          } else if (response.code == 1009) {
+            Vue.prototype.$message.error('请勿重复投票')
+          } else {
+            console.log(response.msg);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
   },
-  mounted: function() {
+  mounted: function () {
     this.getPostDetail();
   }
 };
@@ -103,6 +127,7 @@ export default {
 <style lang="less" scoped>
 .content {
   max-width: 100%;
+  min-height: 600px;
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
@@ -110,6 +135,7 @@ export default {
   margin: 0 auto;
   padding: 20px 24px;
   margin-top: 48px;
+
   .left {
     flex-grow: 1;
     max-width: 740px;
@@ -122,10 +148,12 @@ export default {
     margin-right: 12px;
     padding-bottom: 30px;
     position: relative;
+
     .container {
       width: 100%;
       height: auto;
       position: relative;
+
       .post {
         align-items: center;
         box-sizing: border-box;
@@ -140,6 +168,7 @@ export default {
         top: 0;
         width: 40px;
         border-left: 4px solid transparent;
+
         // background: #f8f9fa;
         .text {
           color: #1a1a1b;
@@ -150,9 +179,11 @@ export default {
           word-break: normal;
         }
       }
+
       .l-container {
         padding: 15px;
         margin-left: 40px;
+
         .con-title {
           color: #000000;
           font-size: 18px;
@@ -161,40 +192,46 @@ export default {
           text-decoration: none;
           word-break: break-word;
         }
-        .con-info{
+
+        .con-info {
           margin: 25px 0;
           padding: 15px 0;
           border-bottom: 1px solid grey;
         }
+
         .con-cover {
           height: 512px;
           width: 100%;
-          background: url("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1585999647247&di=7e9061211c23e3ed9f0c4375bb3822dc&imgtype=0&src=http%3A%2F%2Fi1.hdslb.com%2Fbfs%2Farchive%2F04d8cda08e170f4a58c18c45a93c539375c22162.jpg")
-            no-repeat;
+          background: url("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1585999647247&di=7e9061211c23e3ed9f0c4375bb3822dc&imgtype=0&src=http%3A%2F%2Fi1.hdslb.com%2Fbfs%2Farchive%2F04d8cda08e170f4a58c18c45a93c539375c22162.jpg") no-repeat;
           background-size: cover;
           margin-top: 10px;
           margin-bottom: 10px;
         }
+
         .user-btn {
           font-size: 12px;
           display: flex;
           display: -webkit-flex;
+
           .btn-item {
             display: flex;
             display: -webkit-flex;
             align-items: center;
             margin-right: 10px;
-            .iconfont{
+
+            .iconfont {
               margin-right: 4px;
             }
           }
         }
       }
     }
+
     .comment {
       width: 100%;
       height: auto;
       position: relative;
+
       .c-left {
         .line {
           border-right: 2px solid #edeff1;
@@ -203,6 +240,7 @@ export default {
           position: absolute;
           left: 20px;
         }
+
         .c-arrow {
           display: flex;
           display: -webkit-flex;
@@ -214,17 +252,21 @@ export default {
           padding-bottom: 5px;
         }
       }
+
       .c-right {
         margin-left: 40px;
         padding-right: 10px;
+
         .c-user-info {
           margin-bottom: 10px;
+
           .name {
             color: #1c1c1c;
             font-size: 12px;
             font-weight: 400;
             line-height: 16px;
           }
+
           .num {
             padding-left: 4px;
             font-size: 12px;
@@ -233,6 +275,7 @@ export default {
             color: #7c7c7c;
           }
         }
+
         .c-content {
           font-family: Noto Sans, Arial, sans-serif;
           font-size: 14px;
@@ -244,10 +287,12 @@ export default {
       }
     }
   }
+
   .right {
     flex-grow: 0;
     width: 312px;
     margin-top: 32px;
+
     .topic-info {
       width: 100%;
       // padding: 12px;
@@ -259,11 +304,13 @@ export default {
       overflow: visible;
       word-wrap: break-word;
       padding-bottom: 30px;
+
       .t-header {
         width: 100%;
         height: 34px;
         background: #0079d3;
       }
+
       .t-info {
         padding: 0 12px;
         display: flex;
@@ -271,6 +318,7 @@ export default {
         width: 100%;
         height: 54px;
         align-items: center;
+
         .avatar {
           width: 54px;
           height: 54px;
@@ -278,6 +326,7 @@ export default {
           background-size: cover;
           margin-right: 10px;
         }
+
         .topic-name {
           height: 100%;
           line-height: 54px;
@@ -285,6 +334,7 @@ export default {
           font-weight: 500;
         }
       }
+
       .t-desc {
         font-family: Noto Sans, Arial, sans-serif;
         font-size: 14px;
@@ -294,23 +344,27 @@ export default {
         margin-bottom: 8px;
         padding: 0 12px;
       }
+
       .t-num {
         padding: 0 12px 20px 12px;
         display: flex;
         display: -webkit-flex;
         align-items: center;
         border-bottom: 1px solid #edeff1;
+
         .t-num-item {
           list-style: none;
           display: flex;
           display: -webkit-flex;
           flex-direction: column;
           width: 50%;
+
           .number {
             font-size: 16px;
             font-weight: 500;
             line-height: 20px;
           }
+
           .unit {
             font-size: 12px;
             font-weight: 500;
@@ -319,6 +373,7 @@ export default {
           }
         }
       }
+
       .date {
         font-family: Noto Sans, Arial, sans-serif;
         font-size: 14px;
@@ -327,6 +382,7 @@ export default {
         margin-top: 20px;
         padding: 0 12px;
       }
+
       .topic-btn {
         width: 286px;
         height: 34px;
@@ -340,5 +396,4 @@ export default {
       }
     }
   }
-}
-</style>
+}</style>
