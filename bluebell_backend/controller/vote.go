@@ -60,7 +60,7 @@ func VoteHandler(c *gin.Context) {
 	// 具体投票的业务逻辑
 	if err := logic.VoteForPost(userID, vote); err != nil {
 		zap.L().Error("logic.VoteForPost() failed", zap.Error(err))
-		ResponseError(c, CodeServerBusy)
+		ResponseError(c, ErrVoteRepeated)
 		return
 	}
 	ResponseSuccess(c, nil)
