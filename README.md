@@ -12,6 +12,11 @@
 - 公众号：Gopher毛
 - 微信：18836288306
 
+**感谢技术支持：**[☆往事随風☆](https://github.com/china-521)
+
+* [个人博客](https://wk-blog.vip)
+* [CSDN](https://blog.csdn.net/m0_47214030?spm=1000.2115.3001.5343)
+
 ## 技能清单
 1. gin框架
 2. zap日志库
@@ -49,7 +54,7 @@
 
 ## 项目预览图
 
-[//]: # ([![bCORoR.png]&#40;https://s4.ax1x.com/2022/02/23/bCORoR.png&#41;]&#40;https://imgtu.com/i/bCORoR&#41;)
+[//]: # "[![bCORoR.png]&#40;https://s4.ax1x.com/2022/02/23/bCORoR.png&#41;]&#40;https://imgtu.com/i/bCORoR&#41;"
 
 [![image.png](https://i.postimg.cc/brRyjhPL/image.png)](https://postimg.cc/zHVZn4VR)
 
