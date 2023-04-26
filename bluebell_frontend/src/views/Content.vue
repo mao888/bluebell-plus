@@ -173,12 +173,7 @@ export default {
 
         .con-info {
           margin: 25px 0;
-          overflow: hidden;
           line-height: 2;
-          text-overflow: ellipsis;
-          -webkit-line-clamp: 4;
-          display: -webkit-box;
-          -webkit-box-orient: vertical;
         }
 
         .con-cover {
