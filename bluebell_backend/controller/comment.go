@@ -20,7 +20,7 @@ func CommentHandler(c *gin.Context) {
 		ResponseError(c, CodeInvalidParams)
 		return
 	}
-	// 生成帖子ID
+	// 生成评论ID
 	commentID, err := snowflake.GetID()
 	if err != nil {
 		zap.L().Error("snowflake.GetID() failed", zap.Error(err))
@@ -37,7 +37,7 @@ func CommentHandler(c *gin.Context) {
 	comment.CommentID = commentID
 	comment.AuthorID = userID
 
-	// 创建帖子
+	// 创建评论
 	if err := mysql.CreateComment(&comment); err != nil {
 		zap.L().Error("mysql.CreatePost(&post) failed", zap.Error(err))
 		ResponseError(c, CodeServerBusy)

@@ -100,11 +100,7 @@ func PostDetailHandler(c *gin.Context) {
 	ResponseSuccess(c, post)
 }
 
-/**
- * @Author huchao
- * @Description //TODO 根据社区去查询帖子列表
- * @Date 22:44 2022/2/16
- **/
+// GetCommunityPostListHandler 根据社区去查询帖子列表
 func GetCommunityPostListHandler(c *gin.Context) {
 	// GET请求参数(query string)： /api/v1/posts2?page=1&size=10&order=time
 	// 获取分页参数

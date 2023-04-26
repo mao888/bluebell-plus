@@ -37,12 +37,12 @@ func GetCommunityNameByID(idStr string) (community *models.Community, err error)
 }
 
 // GetCommunityByID 根据ID查询分类社区详情
-func GetCommunityByID(id uint64) (community *models.CommunityDetail, err error) {
-	community = new(models.CommunityDetail)
+func GetCommunityByID(id uint64) (*models.CommunityDetailRes, error) {
+	community := new(models.CommunityDetail)
 	sqlStr := `select community_id, community_name, introduction, create_time
 	from community
 	where community_id = ?`
-	err = db.Get(community, sqlStr, id)
+	err := db.Get(community, sqlStr, id)
 	if err != nil {
 		if err == sql.ErrNoRows { // 查询为空
 			return nil, errors.New(ErrorInvalidID) // 无效的ID return
@@ -50,5 +50,10 @@ func GetCommunityByID(id uint64) (community *models.CommunityDetail, err error) 
 		zap.L().Error("query community failed", zap.String("sql", sqlStr), zap.Error(err))
 		return nil, errors.New(ErrorQueryFailed)
 	}
-	return community, err
+	return &models.CommunityDetailRes{
+		CommunityID:   community.CommunityID,
+		CommunityName: community.CommunityName,
+		Introduction:  community.Introduction,
+		CreateTime:    community.CreateTime.Format("2006-01-02 15:04:05"),
+	}, err
 }

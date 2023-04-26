@@ -75,10 +75,10 @@ func GetPostById(postID int64) (data *models.ApiPostDetail, err error) {
 
 	// 接口数据拼接
 	data = &models.ApiPostDetail{
-		Post:            post,
-		CommunityDetail: community,
-		AuthorName:      user.UserName,
-		VoteNum:         voteNum,
+		Post:               post,
+		CommunityDetailRes: community,
+		AuthorName:         user.UserName,
+		VoteNum:            voteNum,
 	}
 	return data, nil
 }
@@ -110,9 +110,9 @@ func GetPostList(page, size int64) ([]*models.ApiPostDetail, error) {
 		}
 		// 接口数据拼接
 		postDetail := &models.ApiPostDetail{
-			Post:            post,
-			CommunityDetail: community,
-			AuthorName:      user.UserName,
+			Post:               post,
+			CommunityDetailRes: community,
+			AuthorName:         user.UserName,
 		}
 		data = append(data, postDetail)
 	}
@@ -163,10 +163,10 @@ func GetPostList2(p *models.ParamPostList) (data []*models.ApiPostDetail, err er
 		}
 		// 接口数据拼接
 		postDetail := &models.ApiPostDetail{
-			VoteNum:         voteData[idx],
-			Post:            post,
-			CommunityDetail: community,
-			AuthorName:      user.UserName,
+			VoteNum:            voteData[idx],
+			Post:               post,
+			CommunityDetailRes: community,
+			AuthorName:         user.UserName,
 		}
 		data = append(data, postDetail)
 	}
@@ -221,10 +221,10 @@ func GetCommunityPostList(p *models.ParamPostList) (data []*models.ApiPostDetail
 		}
 		// 接口数据拼接
 		postdetail := &models.ApiPostDetail{
-			VoteNum:         voteData[idx],
-			Post:            post,
-			CommunityDetail: community,
-			AuthorName:      user.UserName,
+			VoteNum:            voteData[idx],
+			Post:               post,
+			CommunityDetailRes: community,
+			AuthorName:         user.UserName,
 		}
 		data = append(data, postdetail)
 	}

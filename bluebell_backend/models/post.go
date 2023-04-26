@@ -44,9 +44,9 @@ func (p *Post) UnmarshalJSON(data []byte) (err error) {
 
 // ApiPostDetail 帖子返回的详情结构体
 type ApiPostDetail struct {
-	*Post                               // 嵌入帖子结构体
-	*CommunityDetail `json:"community"` // 嵌入社区信息
-	AuthorName       string             `json:"author_name"`
-	VoteNum          int64              `json:"vote_num"` // 投票数量
+	*Post                                  // 嵌入帖子结构体
+	*CommunityDetailRes `json:"community"` // 嵌入社区信息
+	AuthorName          string             `json:"author_name"`
+	VoteNum             int64              `json:"vote_num"` // 投票数量
 	//CommunityName string `json:"community_name"`
 }
