@@ -288,8 +288,8 @@ export default {
           text-align: center;
           margin-left: auto;
           cursor: pointer;
-          position:absolute;
-          right:0;
+          position: absolute;
+          right: 0;
         }
       }
 
@@ -374,6 +374,11 @@ export default {
           .con-memo {
             margin-top: 10px;
             margin-bottom: 10px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -webkit-line-clamp: 4;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
           }
 
           .con-cover {
