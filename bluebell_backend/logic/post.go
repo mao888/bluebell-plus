@@ -122,6 +122,12 @@ func GetPostList(page, size int64) ([]*models.ApiPostDetail, error) {
 // GetPostList2 升级版帖子列表接口：按 创建时间 或者 分数排序
 func GetPostList2(p *models.ParamPostList) (*models.ApiPostDetailRes, error) {
 	var res models.ApiPostDetailRes
+	// 从mysql获取帖子列表总数
+	total, err := mysql.GetPostTotalCount()
+	if err != nil {
+		return nil, err
+	}
+	res.Page.Total = total
 	// 1、根据参数中的排序规则去redis查询id列表
 	ids, err := redis.GetPostIDsInOrder(p)
 	if err != nil {
@@ -146,7 +152,6 @@ func GetPostList2(p *models.ParamPostList) (*models.ApiPostDetailRes, error) {
 	}
 	res.Page.Page = p.Page
 	res.Page.Size = p.Size
-	res.Page.Total = int64(len(posts))
 	res.List = make([]*models.ApiPostDetail, 0, len(posts))
 	// 4、组合数据
 	// 将帖子的作者及分区信息查询出来填充到帖子中
@@ -182,6 +187,12 @@ func GetPostList2(p *models.ParamPostList) (*models.ApiPostDetailRes, error) {
 // GetCommunityPostList 根据社区id去查询帖子列表
 func GetCommunityPostList(p *models.ParamPostList) (*models.ApiPostDetailRes, error) {
 	var res models.ApiPostDetailRes
+	// 从mysql获取该社区下帖子列表总数
+	total, err := mysql.GetCommunityPostTotalCount(p.CommunityID)
+	if err != nil {
+		return nil, err
+	}
+	res.Page.Total = total
 	// 1、根据参数中的排序规则去redis查询id列表
 	ids, err := redis.GetCommunityPostIDsInOrder(p)
 	if err != nil {
@@ -237,7 +248,6 @@ func GetCommunityPostList(p *models.ParamPostList) (*models.ApiPostDetailRes, er
 		}
 		res.List = append(res.List, postDetail)
 	}
-	res.Page.Total = int64(len(res.List))
 	return &res, nil
 }
 
