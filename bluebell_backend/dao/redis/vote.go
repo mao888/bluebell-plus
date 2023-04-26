@@ -9,9 +9,10 @@ import (
 )
 
 const (
-	OneWeekInSeconds         = 7 * 24 * 3600 // 一周的秒数
-	VoteScore        float64 = 432           // 每一票的值432分
-	PostPerAge               = 20            // 每页显示20条帖子
+	OneWeekInSeconds          = 7 * 24 * 3600        // 一周的秒数
+	OneMonthInSeconds         = 4 * OneWeekInSeconds // 一个月的秒数
+	VoteScore         float64 = 432                  // 每一票的值432分
+	PostPerAge                = 20                   // 每页显示20条帖子
 )
 
 /*
@@ -129,7 +130,7 @@ func CreatePost(postID, userID uint64, title, summary string, CommunityID uint64
 		Score:  1,
 		Member: userID,
 	})
-	pipeline.Expire(votedKey, time.Second*OneWeekInSeconds) // 过期时间：一周
+	pipeline.Expire(votedKey, time.Second*OneMonthInSeconds*6) // 过期时间：6个月
 	// 文章 hash
 	pipeline.HMSet(KeyPostInfoHashPrefix+strconv.Itoa(int(postID)), postInfo)
 	// 添加到分数 ZSet
