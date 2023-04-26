@@ -39,7 +39,7 @@ func CommentHandler(c *gin.Context) {
 
 	// 创建评论
 	if err := mysql.CreateComment(&comment); err != nil {
-		zap.L().Error("mysql.CreatePost(&post) failed", zap.Error(err))
+		zap.L().Error("mysql.CreateComment(&comment) failed", zap.Error(err))
 		ResponseError(c, CodeServerBusy)
 		return
 	}

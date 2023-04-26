@@ -10,6 +10,28 @@ import (
 	"go.uber.org/zap"
 )
 
+// GetPostTotalCount 查询数据库帖子总数
+func GetPostTotalCount() (count int64, err error) {
+	sqlStr := `select count(post_id) from post`
+	err = db.Get(&count, sqlStr)
+	if err != nil {
+		zap.L().Error("db.Get(&count, sqlStr) failed", zap.Error(err))
+		return 0, err
+	}
+	return
+}
+
+// GetCommunityPostTotalCount 根据社区id查询数据库帖子总数
+func GetCommunityPostTotalCount(communityID uint64) (count int64, err error) {
+	sqlStr := `select count(post_id) from post where community_id = ?`
+	err = db.Get(&count, sqlStr, communityID)
+	if err != nil {
+		zap.L().Error("db.Get(&count, sqlStr) failed", zap.Error(err))
+		return 0, err
+	}
+	return
+}
+
 // CreatePost 创建帖子
 func CreatePost(post *models.Post) (err error) {
 
