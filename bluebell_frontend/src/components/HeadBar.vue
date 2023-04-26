@@ -63,7 +63,7 @@ export default {
   display: -webkit-flex;
   align-items: center;
   top: 0;
-  z-index: 1;
+  z-index: 100;
   .logo {
     margin-left: 10px;
     height: 32px;
