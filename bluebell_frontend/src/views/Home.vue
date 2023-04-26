@@ -41,6 +41,12 @@
             </div> -->
           </div>
         </li>
+        <div class="pagination-block">
+          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="1"
+            :page-sizes="[5, 10, 20, 30]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper"
+            :total="pageTotal.total">
+          </el-pagination>
+        </div>
       </ul>
     </div>
     <div class="right">
@@ -69,9 +75,11 @@ export default {
   data() {
     return {
       order: "time",
-      page: 1,
       postList: [],
-      wordOfDay: ''
+      wordOfDay: '',
+      pageNumber: 0,
+      pageSize: 5,
+      pageTotal: {},
     };
   },
   created() {
@@ -81,6 +89,14 @@ export default {
     selectOrder(order) {
       this.order = order;
       this.getPostList()
+    },
+    handleCurrentChange(val) {
+      this.pageNumber = val;
+      this.getPostList();
+    },
+    handleSizeChange(val) {
+      this.pageSize = val;
+      this.getPostList();
     },
     goPublish() {
       this.$router.push({ name: "Publish" });
@@ -93,14 +109,16 @@ export default {
         method: "get",
         url: "/posts2",
         params: {
-          page: this.page,
+          page: this.pageNumber,
+          size: this.pageSize,
           order: this.order,
         }
       })
         .then(response => {
           console.log(response.data, 222);
           if (response.code == 1000) {
-            this.postList = response.data;
+            this.postList = response.data.list;
+            this.pageTotal = response.data.page;
           } else {
             console.log(response.msg);
           }
@@ -238,13 +256,13 @@ export default {
 
       .btn-publish {
         height: 32px;
-        width:78%;
+        width: 78%;
         display: flex;
-        position:relative;
+        position: relative;
         border-radius: 4px;
 
         .word-of-day {
-          width:87%;
+          width: 87%;
           line-height: 32px;
           font-size: 14px;
           overflow: hidden;
@@ -253,9 +271,9 @@ export default {
           background-image: linear-gradient(to right, orange, purple);
           -webkit-background-clip: text;
           color: transparent;
-          text-align:center;
+          text-align: center;
           cursor: pointer;
-          margin-left:1rem;
+          margin-left: 1rem;
         }
 
         .publish {
@@ -384,6 +402,11 @@ export default {
           }
         }
       }
+    }
+
+    .pagination-block {
+      background: #fff;
+      padding: 8px;
     }
   }
 
