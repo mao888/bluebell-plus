@@ -31,7 +31,7 @@ func GetCommentListByIDs(ids []string) (commentList []*models.Comment, err error
 	if err != nil {
 		return
 	}
-	// sqlx.In 返回带 `?` bindvar的查询语句, 我们使用Rebind()重新绑定它
+	// sqlx.In 返回带 `?` bindVar 的查询语句, 我们使用Rebind()重新绑定它
 	query = db.Rebind(query)
 	err = db.Select(&commentList, query, args...)
 	return
