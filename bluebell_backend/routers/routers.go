@@ -42,14 +42,16 @@ func SetupRouter(mode string) *gin.Engine {
 	v1.POST("/login", controller.LoginHandler)               // 登陆业务
 	v1.POST("/signup", controller.SignUpHandler)             // 注册业务
 	v1.GET("/refresh_token", controller.RefreshTokenHandler) // 刷新accessToken
-
+	// 帖子业务
 	v1.GET("/posts", controller.PostListHandler)      // 分页展示帖子列表
 	v1.GET("/posts2", controller.PostList2Handler)    // 根据时间或者分数排序分页展示帖子列表
 	v1.GET("/post/:id", controller.PostDetailHandler) // 查询帖子详情
-
+	// 社区业务
 	v1.GET("/community", controller.CommunityHandler)           // 获取分类社区列表
 	v1.GET("/community/:id", controller.CommunityDetailHandler) // 根据ID查找社区详情
-
+	// 根据社区去查询帖子列表
+	v1.GET("")
+	// 中间件
 	v1.Use(middlewares.JWTAuthMiddleware()) // 应用JWT认证中间件
 	{
 		v1.POST("/post", controller.CreatePostHandler) // 创建帖子

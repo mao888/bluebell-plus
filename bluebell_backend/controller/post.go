@@ -57,11 +57,7 @@ func PostListHandler(c *gin.Context) {
 func PostList2Handler(c *gin.Context) {
 	// GET请求参数(query string)： /api/v1/posts2?page=1&size=10&order=time
 	// 获取分页参数
-	p := &models.ParamPostList{
-		Page:  1,
-		Size:  10,
-		Order: models.OrderTime, // magic string
-	}
+	p := &models.ParamPostList{}
 	//c.ShouldBind() 根据请求的数据类型选择相应的方法去获取数据
 	//c.ShouldBindJSON() 如果请求中携带的是json格式的数据，才能用这个方法获取到数据
 	if err := c.ShouldBindQuery(p); err != nil {

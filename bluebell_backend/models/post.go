@@ -50,3 +50,14 @@ type ApiPostDetail struct {
 	VoteNum             int64              `json:"vote_num"` // 投票数量
 	//CommunityName string `json:"community_name"`
 }
+
+type Page struct {
+	Total int64 `json:"total"`
+	Page  int64 `json:"page"`
+	Size  int64 `json:"size"`
+}
+
+type ApiPostDetailRes struct {
+	Page Page             `json:"page"`
+	List []*ApiPostDetail `json:"list"`
+}

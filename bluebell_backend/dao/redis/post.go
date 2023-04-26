@@ -11,7 +11,7 @@ import (
 func getIDsFormKey(key string, page, size int64) ([]string, error) {
 	start := (page - 1) * size
 	end := start + size - 1
-	// 3.ZREVRANGE 按照分数从大到小的顺序查询指定数量的元素
+	// 3.ZRevRange 按照分数从大到小的顺序查询指定数量的元素
 	return client.ZRevRange(key, start, end).Result()
 }
 

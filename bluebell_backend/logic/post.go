@@ -120,29 +120,35 @@ func GetPostList(page, size int64) ([]*models.ApiPostDetail, error) {
 }
 
 // GetPostList2 升级版帖子列表接口：按 创建时间 或者 分数排序
-func GetPostList2(p *models.ParamPostList) (data []*models.ApiPostDetail, err error) {
-	// 2、去redis查询id列表
+func GetPostList2(p *models.ParamPostList) (*models.ApiPostDetailRes, error) {
+	var res models.ApiPostDetailRes
+	// 1、根据参数中的排序规则去redis查询id列表
 	ids, err := redis.GetPostIDsInOrder(p)
 	if err != nil {
 		return nil, err
 	}
 	if len(ids) == 0 {
 		zap.L().Warn("redis.GetPostIDsInOrder(p) return 0 data")
-		return nil, nil
+		return &res, nil
 	}
 	zap.L().Debug("GetPostList2", zap.Any("ids: ", ids))
-	// 提前查询好每篇帖子的投票数
+	// 2、提前查询好每篇帖子的投票数
 	voteData, err := redis.GetPostVoteData(ids)
 	if err != nil {
-		return
+		return nil, err
 	}
 
 	// 3、根据id去数据库查询帖子详细信息
 	// 返回的数据还要按照我给定的id的顺序返回  order by FIND_IN_SET(post_id, ?)
 	posts, err := mysql.GetPostListByIDs(ids)
 	if err != nil {
-		return
+		return nil, err
 	}
+	res.Page.Page = p.Page
+	res.Page.Size = p.Size
+	res.Page.Total = int64(len(posts))
+	res.List = make([]*models.ApiPostDetail, 0, len(posts))
+	// 4、组合数据
 	// 将帖子的作者及分区信息查询出来填充到帖子中
 	for idx, post := range posts {
 		// 根据作者id查询作者信息
@@ -151,7 +157,7 @@ func GetPostList2(p *models.ParamPostList) (data []*models.ApiPostDetail, err er
 			zap.L().Error("mysql.GetUserByID() failed",
 				zap.Uint64("postID", post.AuthorId),
 				zap.Error(err))
-			continue
+			user = nil
 		}
 		// 根据社区id查询社区详细信息
 		community, err := mysql.GetCommunityByID(post.CommunityID)
@@ -159,7 +165,7 @@ func GetPostList2(p *models.ParamPostList) (data []*models.ApiPostDetail, err er
 			zap.L().Error("mysql.GetCommunityByID() failed",
 				zap.Uint64("community_id", post.CommunityID),
 				zap.Error(err))
-			continue
+			community = nil
 		}
 		// 接口数据拼接
 		postDetail := &models.ApiPostDetail{
@@ -168,71 +174,75 @@ func GetPostList2(p *models.ParamPostList) (data []*models.ApiPostDetail, err er
 			CommunityDetailRes: community,
 			AuthorName:         user.UserName,
 		}
-		data = append(data, postDetail)
+		res.List = append(res.List, postDetail)
 	}
-	return
+	return &res, nil
 }
 
-/**
- * @Author huchao
- * @Description //TODO  根据社区去查询帖子列表
- * @Date 22:53 2022/2/16
- **/
-func GetCommunityPostList(p *models.ParamPostList) (data []*models.ApiPostDetail, err error) {
-	// 2、去redis查询id列表
+// GetCommunityPostList 根据社区id去查询帖子列表
+func GetCommunityPostList(p *models.ParamPostList) (*models.ApiPostDetailRes, error) {
+	var res models.ApiPostDetailRes
+	// 1、根据参数中的排序规则去redis查询id列表
 	ids, err := redis.GetCommunityPostIDsInOrder(p)
 	if err != nil {
-		return
+		return nil, err
 	}
 	if len(ids) == 0 {
 		zap.L().Warn("redis.GetCommunityPostList(p) return 0 data")
-		return
+		return &res, nil
 	}
 	zap.L().Debug("GetPostList2", zap.Any("ids", ids))
-	// 提前查询好每篇帖子的投票数
+	// 2、提前查询好每篇帖子的投票数
 	voteData, err := redis.GetPostVoteData(ids)
 	if err != nil {
-		return
+		return nil, err
 	}
-
 	// 3、根据id去数据库查询帖子详细信息
 	// 返回的数据还要按照我给定的id的顺序返回  order by FIND_IN_SET(post_id, ?)
 	posts, err := mysql.GetPostListByIDs(ids)
 	if err != nil {
-		return
+		return nil, err
 	}
-	// 将帖子的作者及分区信息查询出来填充到帖子中
+	res.Page.Page = p.Page
+	res.Page.Size = p.Size
+	res.List = make([]*models.ApiPostDetail, 0, len(posts))
+	// 4、根据社区id查询社区详细信息
+	// 为了减少数据库的查询次数，这里将社区信息提前查询出来
+	community, err := mysql.GetCommunityByID(p.CommunityID)
+	if err != nil {
+		zap.L().Error("mysql.GetCommunityByID() failed",
+			zap.Uint64("community_id", p.CommunityID),
+			zap.Error(err))
+		community = nil
+	}
 	for idx, post := range posts {
+		// 过滤掉不属于该社区的帖子
+		if post.CommunityID != p.CommunityID {
+			continue
+		}
 		// 根据作者id查询作者信息
 		user, err := mysql.GetUserByID(post.AuthorId)
 		if err != nil {
 			zap.L().Error("mysql.GetUserByID() failed",
 				zap.Uint64("postID", post.AuthorId),
 				zap.Error(err))
-			continue
-		}
-		// 根据社区id查询社区详细信息
-		community, err := mysql.GetCommunityByID(post.CommunityID)
-		if err != nil {
-			zap.L().Error("mysql.GetCommunityByID() failed",
-				zap.Uint64("community_id", post.CommunityID),
-				zap.Error(err))
-			continue
+			user = nil
 		}
 		// 接口数据拼接
-		postdetail := &models.ApiPostDetail{
+		postDetail := &models.ApiPostDetail{
 			VoteNum:            voteData[idx],
 			Post:               post,
 			CommunityDetailRes: community,
 			AuthorName:         user.UserName,
 		}
-		data = append(data, postdetail)
+		res.List = append(res.List, postDetail)
 	}
-	return
+	res.Page.Total = int64(len(res.List))
+	return &res, nil
 }
 
 // GetPostListNew 将两个查询帖子列表逻辑合二为一的函数
-func GetPostListNew(p *models.ParamPostList) (data []*models.ApiPostDetail, err error) {
+func GetPostListNew(p *models.ParamPostList) (data *models.ApiPostDetailRes, err error) {
 	// 根据请求参数的不同,执行不同的业务逻辑
 	if p.CommunityID == 0 {
 		// 查所有
