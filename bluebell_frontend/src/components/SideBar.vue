@@ -2,9 +2,16 @@
 	<div class="side-bar-container">
 		<div class="title">
 			<el-avatar src="https://z3.ax1x.com/2021/08/31/hdu3a6.jpg"></el-avatar>
-			<h4>博主信息</h4>
+			<el-link type="primary" class="leave-message" @click="goMessage">
+				<i class="el-icon-chat-dot-round"></i>
+				博主留言
+			</el-link>
 			<el-divider><i class="el-icon-user-solid"></i></el-divider>
 		</div>
+		<p align="center">
+			Visitor count<br>
+			<img src="https://profile-counter.glitch.me/mao888/count.svg" />
+		</p>
 		<el-carousel indicator-position="outside">
 			<el-carousel-item v-for="item in imgOptions" :key="item.id">
 				<img style="object-fit: cover;width:100%;height: 100%;;" :src="item.path" alt="图片" width="300px" />
@@ -107,6 +114,13 @@ export default {
 			colors: ["#99A9BF", "#F7BA2A", "#FF9900"],
 		};
 	},
+	methods: {
+		goMessage() {
+			this.$router.push({
+				name: 'Message'
+			});
+		}
+	}
 };
 </script>
   
@@ -125,6 +139,17 @@ export default {
 .title .el-avatar {
 	width: 100px;
 	height: 100px;
+}
+
+.title .leave-message {
+	display: block;
+	width: fit-content;
+	margin: 0 auto;
+	font-size:16px;
+}
+
+.title .leave-message i{
+	font-size:1.1rem;
 }
 
 .title /deep/ .el-avatar img {
@@ -184,9 +209,8 @@ export default {
 .mine {
 	width: 210px;
 	margin: 0 auto;
-	.box-card{
-		
-	}
+
+	.box-card {}
 }
 
 .mine span {
@@ -195,8 +219,8 @@ export default {
 	color: #58666e;
 }
 
-.mine .box-card{
-	margin-bottom:1rem;
+.mine .box-card {
+	margin-bottom: 1rem;
 }
 
 .text {
@@ -233,7 +257,8 @@ export default {
 	padding: 12px 20px 35px;
 	/* background: #fdf6ec; */
 }
-.calendar{
-	margin-bottom:0.5rem;
+
+.calendar {
+	margin-bottom: 0.5rem;
 }
 </style>

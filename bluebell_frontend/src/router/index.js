@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Content from '../views/Content.vue'
+import Community from '../views/Community.vue'
+import Message from '../views/Message.vue'
 import Publish from '../views/Publish.vue'
 import Login from '../views/Login.vue'
 import SignUp from '../views/SignUp.vue'
@@ -11,8 +13,7 @@ VueRouter.prototype.push = function push(location) {
 }
 Vue.use(VueRouter)
 
-  const routes = [
-  {
+const routes = [{
     path: '/',
     name: 'Home',
     component: Home
@@ -23,19 +24,31 @@ Vue.use(VueRouter)
     component: Content
   },
   {
+    path: '/community/:id',
+    name: 'Community',
+    component: Community
+  },
+  {
+    path: '/message',
+    name: 'Message',
+    component: Message
+  },
+  {
     path: '/publish',
     name: 'Publish',
     component: Publish,
-    meta: { requireAuth: true }
+    meta: {
+      requireAuth: true
+    }
   },
   {
     path: '/login',
-    name:"Login",
+    name: "Login",
     component: Login
   },
   {
     path: '/signup',
-    name:"SignUp",
+    name: "SignUp",
     component: SignUp
   }
 ]
