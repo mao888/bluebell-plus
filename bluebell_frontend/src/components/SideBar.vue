@@ -2,10 +2,10 @@
 	<div class="side-bar-container">
 		<div class="title">
 			<el-avatar src="https://z3.ax1x.com/2021/08/31/hdu3a6.jpg"></el-avatar>
-			<el-link type="primary" class="leave-message" @click="goMessage">
+			<router-link type="primary" class="leave-message" to="/message">
 				<i class="el-icon-chat-dot-round"></i>
 				博主留言
-			</el-link>
+			</router-link>
 			<el-divider><i class="el-icon-user-solid"></i></el-divider>
 		</div>
 		<p align="center">
@@ -114,13 +114,6 @@ export default {
 			colors: ["#99A9BF", "#F7BA2A", "#FF9900"],
 		};
 	},
-	methods: {
-		goMessage() {
-			this.$router.push({
-				name: 'Message'
-			});
-		}
-	}
 };
 </script>
   
@@ -145,11 +138,15 @@ export default {
 	display: block;
 	width: fit-content;
 	margin: 0 auto;
-	font-size:16px;
+	font-size: 16px;
+	background-image: linear-gradient(to right, orange, purple);
+	-webkit-background-clip: text;
+	color: transparent;
+	text-align: center;
 }
 
-.title .leave-message i{
-	font-size:1.1rem;
+.title .leave-message i {
+	font-size: 1.1rem;
 }
 
 .title /deep/ .el-avatar img {
