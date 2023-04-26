@@ -12,35 +12,12 @@
           </a>
         </div>
         <div class="l-container">
-          <h4 class="con-title">{{post.title}}</h4>
-          <div class="con-info">{{post.content}}</div>
-          <div class="user-btn">
-            <span class="btn-item">
-              <i class="iconfont icon-comment"></i>comment
-            </span>
-          </div>
+          <h4 class="con-title">{{ post.title }}</h4>
+          <div class="con-info">{{ post.content }}</div>
         </div>
       </div>
-
-      <!-- <div class="comment">
-        <div class="c-left">
-          <div class="line"></div>
-          <div class="c-arrow">
-                            <a class="vote"><span class="iconfont icon-up"></span></a>
-                            <a class="up down"></a>
-          </div>
-        </div>
-        <div class="c-right">
-          <div class="c-user-info">
-            <span class="name">mahlerific</span>
-            <span class="num">1.4k points</span>
-            <span class="num">· 5 hours ago</span>
-          </div>
-          <p
-            class="c-content"
-          >We're having the same experience in Yerevan, Armenia. Though you can see mountains all around the city on good days, now you can see even farther into Turkey and Iran. Every crag on the mountains around us is now clearer than ever.</p>
-        </div>
-      </div> -->
+      <!-- 评论区 -->
+      <Comment :sourceId="this.$route.params.id"></Comment>
     </div>
     <div class="right">
       <div class="topic-info">
@@ -49,28 +26,20 @@
           <a class="avatar"></a>
           <span class="topic-name">b/{{ post.community.community_name }}</span>
         </div>
-        <p class="t-desc">{{post.community.introduction}}</p>
-        <ul class="t-num">
-          <li class="t-num-item">
-            <p class="number">5.2m</p>
-            <span class="unit">Members</span>
-          </li>
-          <li class="t-num-item">
-            <p class="number">5.2m</p>
-            <span class="unit">Members</span>
-          </li>
-        </ul>
-        <div class="date">{{create_time}}</div>
-        <button class="topic-btn">JOIN</button>
+        <p class="t-desc">{{ post.community.introduction }}</p>
+        <p class="t-create-time">{{ post.community.create_time }}</p>
+        <div class="date">{{ create_time }}</div>
+        <button class="topic-btn" @click="goCommunityDetail(post.community.community_id)">JOIN</button>
       </div>
     </div>
   </div>
 </template>
-
 <script>
+import Comment from '../components/Comment.vue';
 import Vue from 'vue';
 export default {
   name: "Content",
+  components:{Comment},
   data() {
     return {
       post: {},
@@ -117,8 +86,16 @@ export default {
           console.log(error);
         });
     },
+    goCommunityDetail(community_id) {
+      this.$router.push({
+        name: 'Community',
+        params: {
+          id: community_id
+        }
+      });
+    },
   },
-  mounted: function () {
+  mounted() {
     this.getPostDetail();
   }
 };
@@ -141,7 +118,7 @@ export default {
     max-width: 740px;
     border-radius: 4px;
     word-break: break-word;
-    background: #ffffff;
+    // background: #ffffff;
     border: #edeff1;
     flex: 1;
     margin: 32px;
@@ -168,8 +145,8 @@ export default {
         top: 0;
         width: 40px;
         border-left: 4px solid transparent;
+        background: #f8f9fa;
 
-        // background: #f8f9fa;
         .text {
           color: #1a1a1b;
           font-size: 12px;
@@ -183,6 +160,7 @@ export default {
       .l-container {
         padding: 15px;
         margin-left: 40px;
+        background-color: rgba(255, 255, 255, 0.8);
 
         .con-title {
           color: #000000;
@@ -195,8 +173,12 @@ export default {
 
         .con-info {
           margin: 25px 0;
-          padding: 15px 0;
-          border-bottom: 1px solid grey;
+          overflow: hidden;
+          line-height: 2;
+          text-overflow: ellipsis;
+          -webkit-line-clamp: 4;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
         }
 
         .con-cover {
@@ -335,7 +317,8 @@ export default {
         }
       }
 
-      .t-desc {
+      .t-desc,
+      .t-create-time {
         font-family: Noto Sans, Arial, sans-serif;
         font-size: 14px;
         line-height: 21px;
@@ -343,35 +326,6 @@ export default {
         word-wrap: break-word;
         margin-bottom: 8px;
         padding: 0 12px;
-      }
-
-      .t-num {
-        padding: 0 12px 20px 12px;
-        display: flex;
-        display: -webkit-flex;
-        align-items: center;
-        border-bottom: 1px solid #edeff1;
-
-        .t-num-item {
-          list-style: none;
-          display: flex;
-          display: -webkit-flex;
-          flex-direction: column;
-          width: 50%;
-
-          .number {
-            font-size: 16px;
-            font-weight: 500;
-            line-height: 20px;
-          }
-
-          .unit {
-            font-size: 12px;
-            font-weight: 500;
-            line-height: 16px;
-            word-break: break-word;
-          }
-        }
       }
 
       .date {
@@ -396,4 +350,5 @@ export default {
       }
     }
   }
-}</style>
+}
+</style>
