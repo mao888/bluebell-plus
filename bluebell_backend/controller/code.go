@@ -19,6 +19,7 @@ const (
 	CodeInvalidAuthFormat MyCode = 1007
 	CodeNotLogin          MyCode = 1008
 	ErrVoteRepeated       MyCode = 1009
+	ErrorVoteTimeExpire   MyCode = 1010
 )
 
 var msgFlags = map[MyCode]string{
@@ -33,6 +34,7 @@ var msgFlags = map[MyCode]string{
 	CodeInvalidAuthFormat: "认证格式有误",
 	CodeNotLogin:          "未登录",
 	ErrVoteRepeated:       "请勿重复投票",
+	ErrorVoteTimeExpire:   "投票时间已过",
 }
 
 func (c MyCode) Msg() string {
