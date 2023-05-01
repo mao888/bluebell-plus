@@ -142,8 +142,11 @@ export default {
             this.getPostList();
           } else if (response.code == 1009) {
             Vue.prototype.$message.error('请勿重复投票')
+          } else if (response.code == 1010) {
+            Vue.prototype.$message.error('已过投票时间')
           } else {
             console.log(response.msg);
+            Vue.prototype.$message.error('请先登录')
           }
         })
         .catch(error => {

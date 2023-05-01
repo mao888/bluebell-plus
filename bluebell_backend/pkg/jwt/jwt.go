@@ -17,15 +17,15 @@ type MyClaims struct {
 	jwt.StandardClaims
 }
 
-//定义Secret
-var mySecret = []byte("夏天夏天悄悄过去")
+//定义Secret 用于加密的字符串
+var mySecret = []byte("bluebell")
 
 func keyFunc(_ *jwt.Token) (i interface{}, err error) {
 	return mySecret, nil
 }
 
-//定义JWT的过期时间
-const TokenExpireDuration = time.Hour * 24 * 365
+// TokenExpireDuration 定义JWT的过期时间
+const TokenExpireDuration = time.Hour * 24 * 7
 
 // GenToken 生成JWT 生成access token 和 refresh token
 func GenToken(userID uint64, username string) (aToken, rToken string, err error) {

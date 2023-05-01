@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"bluebell_backend/dao/redis"
 	"bluebell_backend/logic"
 	"bluebell_backend/models"
 	"encoding/json"
@@ -60,7 +61,14 @@ func VoteHandler(c *gin.Context) {
 	// 具体投票的业务逻辑
 	if err := logic.VoteForPost(userID, vote); err != nil {
 		zap.L().Error("logic.VoteForPost() failed", zap.Error(err))
-		ResponseError(c, ErrVoteRepeated)
+		switch err {
+		case redis.ErrVoteRepeated: // 重复投票
+			ResponseError(c, ErrVoteRepeated)
+		case redis.ErrorVoteTimeExpire: // 投票超时
+			ResponseError(c, ErrorVoteTimeExpire)
+		default:
+			ResponseError(c, CodeServerBusy)
+		}
 		return
 	}
 	ResponseSuccess(c, nil)
