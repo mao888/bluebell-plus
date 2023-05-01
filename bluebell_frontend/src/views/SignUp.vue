@@ -16,7 +16,7 @@
       </div>
       <div class="form-group">
         <label for="re_pass"><span style="color:red;">* </span>确认密码</label>
-        <el-input type="password" required name="re_pass" id="re_pass" placeholder="确认密码" v-model="re_password" />
+        <el-input type="password" required name="re_pass" id="re_pass" placeholder="确认密码" v-model="confirm_password" />
       </div>
       <div class="form-group">
         <label for="gender"><span style="color:red;">* </span>性别</label>
@@ -60,7 +60,7 @@ export default {
           email: this.email,
           gender: this.gender,
           password: this.password,
-          confirm_password: this.re_password
+          confirm_password: this.confirm_password
         }
       }).then((res) => {
         console.log(res.data);
