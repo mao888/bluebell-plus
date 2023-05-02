@@ -13,7 +13,7 @@
         </div>
         <div class="l-container">
           <h4 class="con-title">{{ post.title }}</h4>
-          <div class="con-info">{{ post.content }}</div>
+          <div class="con-info" v-html="post.content"></div>
         </div>
       </div>
       <!-- 评论区 -->
@@ -35,11 +35,12 @@
   </div>
 </template>
 <script>
+import 'github-markdown-css/github-markdown.css' // 然后添加样式markdown-body
 import Comment from '../components/Comment.vue';
 import Vue from 'vue';
 export default {
   name: "Content",
-  components:{Comment},
+  components: { Comment },
   data() {
     return {
       post: {},
@@ -54,7 +55,10 @@ export default {
         .then(response => {
           console.log(1, response.data);
           if (response.code == 1000) {
+            let MarkdownIt = require('markdown-it');
+            let md = new MarkdownIt();
             this.post = response.data;
+            this.post.content = md.render(this.post.content);
           } else {
             console.log(response.msg);
           }

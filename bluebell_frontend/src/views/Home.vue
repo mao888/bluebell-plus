@@ -77,7 +77,7 @@ export default {
       order: "time",
       postList: [],
       wordOfDay: '',
-      pageNumber: 0,
+      pageNumber: 1,
       pageSize: 5,
       pageTotal: {},
     };
