@@ -4,6 +4,7 @@
       <HeadBar />
       <router-view />
       <Footer></Footer>
+      <el-backtop ></el-backtop>
     </div>
   </div>
 </template>
