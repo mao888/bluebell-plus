@@ -13,7 +13,7 @@
         </div>
         <div class="l-container">
           <h4 class="con-title">{{ post.title }}</h4>
-          <div class="con-info" v-html="post.content"></div>
+          <div class="con-info markdown-body" v-html="post.content"></div>
         </div>
       </div>
       <!-- 评论区 -->
@@ -35,7 +35,6 @@
   </div>
 </template>
 <script>
-import 'github-markdown-css/github-markdown.css' // 然后添加样式markdown-body
 import Comment from '../components/Comment.vue';
 import Vue from 'vue';
 export default {
@@ -181,6 +180,13 @@ export default {
         .con-info {
           margin: 25px 0;
           line-height: 2;
+          code{
+            overflow-x: scroll !important;
+            ::-webkit-scrollbar {
+              width: 10px;
+              height: 10px;
+            }
+          }
         }
 
         .con-cover {

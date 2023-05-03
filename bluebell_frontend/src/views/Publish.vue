@@ -21,7 +21,7 @@
         </div>
         <!---此处放置富文本--->
         <div class="post-text-con">
-          <mavon-editor style="min-height:400px;" v-model="content" />
+          <mavon-editor style="max-height: 600px;" v-model="content" />
         </div>
       </div>
       <div class="post-footer">
