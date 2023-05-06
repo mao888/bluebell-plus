@@ -3,6 +3,7 @@ package controller
 import (
 	"bluebell_backend/logic"
 	"bluebell_backend/models"
+	"fmt"
 	"strconv"
 
 	"go.uber.org/zap"
@@ -115,6 +116,25 @@ func GetCommunityPostListHandler(c *gin.Context) {
 	}
 	// 获取数据
 	data, err := logic.GetCommunityPostList(p)
+	if err != nil {
+		ResponseError(c, CodeServerBusy)
+		return
+	}
+	ResponseSuccess(c, data)
+}
+
+// PostSearchHandler 搜索业务-搜索帖子
+func PostSearchHandler(c *gin.Context) {
+	p := &models.ParamPostList{}
+	if err := c.ShouldBindQuery(p); err != nil {
+		zap.L().Error("PostSearchHandler with invalid params", zap.Error(err))
+		ResponseError(c, CodeInvalidParams)
+		return
+	}
+	fmt.Println("Search", p.Search)
+	fmt.Println("Order", p.Order)
+	// 获取数据
+	data, err := logic.PostSearch(p)
 	if err != nil {
 		ResponseError(c, CodeServerBusy)
 		return

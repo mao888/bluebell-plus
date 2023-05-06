@@ -46,6 +46,8 @@ func SetupRouter(mode string) *gin.Engine {
 	v1.GET("/posts", controller.PostListHandler)      // 分页展示帖子列表
 	v1.GET("/posts2", controller.PostList2Handler)    // 根据社区id及时间或者分数排序分页展示帖子列表
 	v1.GET("/post/:id", controller.PostDetailHandler) // 查询帖子详情
+	v1.GET("/search", controller.PostSearchHandler)   // 搜索业务-搜索帖子
+
 	// 社区业务
 	v1.GET("/community", controller.CommunityHandler)           // 获取分类社区列表
 	v1.GET("/community/:id", controller.CommunityDetailHandler) // 根据ID查找社区详情

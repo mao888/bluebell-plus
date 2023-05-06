@@ -6,6 +6,7 @@ import (
 	"bluebell_backend/models"
 	"bluebell_backend/pkg/snowflake"
 	"fmt"
+	"strconv"
 
 	"go.uber.org/zap"
 )
@@ -266,4 +267,64 @@ func GetPostListNew(p *models.ParamPostList) (data *models.ApiPostDetailRes, err
 		return nil, err
 	}
 	return data, nil
+}
+
+// PostSearch 搜索业务-搜索帖子
+func PostSearch(p *models.ParamPostList) (*models.ApiPostDetailRes, error) {
+	var res models.ApiPostDetailRes
+	// 根据搜索条件去mysql查询符合条件的帖子列表总数
+	total, err := mysql.GetPostListTotalCount(p)
+	if err != nil {
+		return nil, err
+	}
+	res.Page.Total = total
+	// 1、根据搜索条件去mysql分页查询符合条件的帖子列表
+	posts, err := mysql.GetPostListByKeywords(p)
+	if err != nil {
+		return nil, err
+	}
+	// 查询出来的帖子总数可能为0
+	if len(posts) == 0 {
+		return &models.ApiPostDetailRes{}, nil
+	}
+	// 2、查询出来的帖子id列表传入到redis接口获取帖子的投票数
+	ids := make([]string, 0, len(posts))
+	for _, post := range posts {
+		ids = append(ids, strconv.Itoa(int(post.PostID)))
+	}
+	voteData, err := redis.GetPostVoteData(ids)
+	if err != nil {
+		return nil, err
+	}
+	res.Page.Size = p.Size
+	res.Page.Page = p.Page
+	// 3、拼接数据
+	res.List = make([]*models.ApiPostDetail, 0, len(posts))
+	for idx, post := range posts {
+		// 根据作者id查询作者信息
+		user, err := mysql.GetUserByID(post.AuthorId)
+		if err != nil {
+			zap.L().Error("mysql.GetUserByID() failed",
+				zap.Uint64("postID", post.AuthorId),
+				zap.Error(err))
+			user = nil
+		}
+		// 根据社区id查询社区详细信息
+		community, err := mysql.GetCommunityByID(post.CommunityID)
+		if err != nil {
+			zap.L().Error("mysql.GetCommunityByID() failed",
+				zap.Uint64("community_id", post.CommunityID),
+				zap.Error(err))
+			community = nil
+		}
+		// 接口数据拼接
+		postDetail := &models.ApiPostDetail{
+			VoteNum:            voteData[idx],
+			Post:               post,
+			CommunityDetailRes: community,
+			AuthorName:         user.UserName,
+		}
+		res.List = append(res.List, postDetail)
+	}
+	return &res, nil
 }
