@@ -1,9 +1,8 @@
 <template>
   <header class="header">
-      <span class="logo" @click="goIndex">Golang编程论坛</span>
-    <div class="search">
-      <label class="s-logo"></label>
-      <input type="text" class="s-input" placeholder="搜索" />
+    <span class="logo" @click="goIndex">Golang编程论坛</span>
+    <div class="day-of-word">
+      <DayOfWord></DayOfWord>
     </div>
     <div class="btns">
       <div v-show="!isLogin">
@@ -21,22 +20,32 @@
 </template>
 
 <script>
+import DayOfWord from './DayOfWord.vue';
 export default {
   name: "HeadBar",
-  created(){
+  components:{ DayOfWord },
+  created() {
     this.$store.commit("init");
+  },
+  mounted(){
+    this.$bus.$on('pageNumber',(value) => {
+      this.pageNumber = value;
+    });
+    this.$bus.$on('pageSize',(value) => {
+      this.pageSize = value;
+    });
   },
   computed: {
     isLogin() {
       return this.$store.getters.isLogin;
     },
-    currUsername(){
+    currUsername() {
       console.log(this.$store.getters.username);
       return this.$store.getters.username;
     }
   },
   methods: {
-    goIndex(){
+    goIndex() {
       this.$router.push({ name: "Home" });
     },
     goLogin() {
@@ -45,9 +54,9 @@ export default {
     goSignUp() {
       this.$router.push({ name: "SignUp" });
     },
-    goLogout(){
+    goLogout() {
       this.$store.commit("logout");
-    }
+    },
   }
 };
 </script>
@@ -64,6 +73,7 @@ export default {
   align-items: center;
   top: 0;
   z-index: 100;
+
   .logo {
     margin-left: 10px;
     height: 32px;
@@ -77,40 +87,12 @@ export default {
     cursor: pointer;
     font-weight: 600;
   }
-  .search {
-    flex-grow: 1;
-    margin: 0 auto;
+
+  .day-of-word{
     max-width: 690px;
-    position: relative;
-    display: flex;
-    display: -webkit-flex;
-    .s-logo {
-      width: 18px;
-      height: 18px;
-      background: url("../assets/images/search.png") no-repeat;
-      background-size: cover;
-      display: inline-block;
-      position: absolute;
-      top: 50%;
-      margin-top: -9px;
-      left: 15px;
-    }
-    .s-input {
-      flex-grow: 1;
-      -webkit-appearance: none;
-      appearance: none;
-      background-color: #f6f7f8;
-      border-radius: 4px;
-      border: 1px solid #edeff1;
-      box-shadow: none;
-      color: #c1c1c1;
-      display: block;
-      height: 36px;
-      outline: none;
-      padding: 0 16px 0 40px;
-      width: 100%;
-    }
+    margin:0 auto;
   }
+
   .btns {
     flex-grow: 0;
     margin-left: 16px;
@@ -118,6 +100,7 @@ export default {
     display: flex;
     display: -webkit-flex;
     align-items: center;
+
     .login-btn {
       border: 1px solid transparent;
       border-radius: 4px;
@@ -136,13 +119,12 @@ export default {
       fill: #0079d3;
       display: inline-block;
       cursor: pointer;
-      &:nth-child(1) {
-        margin-right: 5px;
-      }
+
       &:nth-child(2) {
-        margin-right: 10px;
+        margin:0 10px;
       }
     }
+
     .user {
       width: auto;
       height: 24px;
@@ -155,6 +137,7 @@ export default {
       align-items: center;
       cursor: pointer;
       padding: 12px 12px 12px 28px;
+
       &::after {
         content: "";
         width: 0;
@@ -167,12 +150,14 @@ export default {
         margin-left: 10px;
       }
     }
+
     .dropdown-content {
       display: none;
       position: absolute;
       background-color: #f9f9f9;
       min-width: 160px;
-      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+
       a {
         color: black;
         padding: 12px 16px;
@@ -180,12 +165,15 @@ export default {
         display: block;
         cursor: pointer;
       }
-      a:hover {background-color: #f1f1f1}
+
+      a:hover {
+        background-color: #f1f1f1
+      }
     }
+
     .user-box:hover .dropdown-content {
       display: block;
     }
   }
-  
-}
-</style>
+
+}</style>
