@@ -1,63 +1,68 @@
 <template>
-  <div class="content">
-    <div class="left">
-      <SideBar></SideBar>
-    </div>
-    <div class="center">
-      <!-- <h4 class="c-l-title">热门帖子</h4> -->
-      <div class="c-l-header">
-        <div class="new btn-iconfont" :class="{ active: timeOrder }" @click="selectOrder('time')">
-          <i class="iconfont icon-polygonred"></i>New
-        </div>
-        <div class="top btn-iconfont" :class="{ active: scoreOrder }" @click="selectOrder('score')">
-          <i class="iconfont icon-top"></i>Score
-        </div>
-        <div class="btn-publish">
-          <div class="word-of-day" @click="getWordOfDay" :title="wordOfDay">{{ wordOfDay }}</div>
-          <div class="publish" @click="goPublish">发表</div>
-        </div>
+  <div>
+    <div class="content">
+      <div class="left">
+        <SideBar></SideBar>
       </div>
-      <ul class="c-l-list">
-        <li class="c-l-item" v-for="post in postList" :key="post.post_id">
-          <div class="post">
-            <a class="vote">
-              <span class="iconfont icon-up" @click="vote(post.post_id, 1)"></span>
-            </a>
-            <span class="text">{{ post.vote_num }}</span>
-            <a class="vote">
-              <span class="iconfont icon-down" @click="vote(post.post_id, -1)"></span>
-            </a>
+      <div class="center">
+        <!-- <h4 class="c-l-title">热门帖子</h4> -->
+        <div class="c-l-header">
+          <div class="new btn-iconfont" :class="{ active: timeOrder }" @click="selectOrder('time')">
+            <i class="iconfont icon-polygonred"></i>New
           </div>
-          <div class="l-container" @click="goDetail(post.post_id)">
-            <h4 class="con-title">{{ post.title }}</h4>
-            <div class="con-memo">
-              <p>{{ post.content }}</p>
+          <div class="top btn-iconfont" :class="{ active: scoreOrder }" @click="selectOrder('score')">
+            <i class="iconfont icon-top"></i>Score
+          </div>
+          <div class="search">
+            <i class="search-icon el-icon-search" @click="searchPost"></i>
+            <input type="text" class="s-input" v-model="keyword" @keydown.enter="searchPost" placeholder="文章搜索" />
+          </div>
+          <div class="btn-publish">
+            <!-- <div class="word-of-day" @click="getWordOfDay" :title="wordOfDay">{{ wordOfDay }}</div> -->
+          </div>
+        </div>
+        <ul class="c-l-list">
+          <li class="c-l-item" v-for="post in postList" :key="post.post_id">
+            <div class="post">
+              <a class="vote">
+                <span class="iconfont icon-up" @click="vote(post.post_id, 1)"></span>
+              </a>
+              <span class="text">{{ post.vote_num }}</span>
+              <a class="vote">
+                <span class="iconfont icon-down" @click="vote(post.post_id, -1)"></span>
+              </a>
             </div>
-            <!-- <div class="user-btn">
+            <div class="l-container" @click="goDetail(post.post_id)">
+              <h4 class="con-title">{{ post.title }}</h4>
+              <div class="con-memo">
+                <p>{{ post.content }}</p>
+              </div>
+              <!-- <div class="user-btn">
               <span class="btn-item">
                 <i class="iconfont icon-comment"></i>
                 <span>{{post.comments}} comments</span>
               </span>
             </div> -->
+            </div>
+          </li>
+          <div class="pagination-block">
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="1"
+              :page-sizes="[5, 10, 20, 30]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper"
+              :total="pageTotal.total">
+            </el-pagination>
           </div>
-        </li>
-        <div class="pagination-block">
-          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="1"
-            :page-sizes="[5, 10, 20, 30]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper"
-            :total="pageTotal.total">
-          </el-pagination>
+        </ul>
+      </div>
+      <div class="right">
+        <div class="run-time-container">
+          <TimeMeter></TimeMeter>
         </div>
-      </ul>
-    </div>
-    <div class="right">
-      <div class="run-time-container">
-        <TimeMeter></TimeMeter>
-      </div>
-      <div class="github-project-card-container">
-        <GithubProjectCard language="all"></GithubProjectCard>
-      </div>
-      <div class="github-golang-project-card-container">
-        <GithubProjectCard language="golang" title="Golang热门项目排行榜"></GithubProjectCard>
+        <div class="github-project-card-container">
+          <GithubProjectCard language="all"></GithubProjectCard>
+        </div>
+        <div class="github-golang-project-card-container">
+          <GithubProjectCard language="golang" title="Golang热门项目排行榜"></GithubProjectCard>
+        </div>
       </div>
     </div>
   </div>
@@ -76,30 +81,33 @@ export default {
     return {
       order: "time",
       postList: [],
-      wordOfDay: '',
       pageNumber: 1,
       pageSize: 5,
       pageTotal: {},
+      keyword:'',
+      isSearch:false
     };
-  },
-  created() {
-    this.getWordOfDay();
   },
   methods: {
     selectOrder(order) {
       this.order = order;
-      this.getPostList()
+      this.getPostList();
     },
     handleCurrentChange(val) {
       this.pageNumber = val;
-      this.getPostList();
+      if(!this.isSearch){
+        this.getPostList();
+      }else {
+        this.searchPost();
+      }
     },
     handleSizeChange(val) {
       this.pageSize = val;
-      this.getPostList();
-    },
-    goPublish() {
-      this.$router.push({ name: "Publish" });
+      if(!this.isSearch){
+        this.getPostList();
+      }else {
+        this.searchPost();
+      }
     },
     goDetail(id) {
       this.$router.push({ name: "Content", params: { id: id } });
@@ -153,11 +161,30 @@ export default {
           console.log(error);
         });
     },
-    async getWordOfDay() {
-      let response = await this.$axios.get(`https://v.api.aa1.cn/api/yiyan/index.php`);
-      const reg = '<p>(.*)</p>';
-      this.wordOfDay = response.match(reg)[1];
-    }
+    async searchPost() {
+      if(!this.keyword){
+        this.isSearch = false;
+        this.getPostList();
+        return;
+      }
+      this.isSearch = true;
+      const response = await this.$axios({
+        method: "get",
+        url: "/search",
+        params: {
+          page: this.pageNumber,
+          size: this.pageSize,
+          search: this.keyword
+        }
+      });
+      if (response.code === 1000) {
+        console.log(response.data);
+        this.postList = response.data.list;
+        this.pageTotal = response.data.page;
+      } else {
+        console.log(response.message);
+      }
+    },
   },
   mounted: function () {
     this.getPostList();
@@ -257,42 +284,46 @@ export default {
         font-size: 14px;
       }
 
-      .btn-publish {
-        height: 32px;
-        width: 78%;
-        display: flex;
+      .search {
+        flex-grow: 0.5;
+        margin: 0 auto;
+        max-width: 650px;
         position: relative;
+        display: flex;
+        display: -webkit-flex;
+        align-items: center;
         border-radius: 4px;
 
-        .word-of-day {
-          width: 87%;
-          line-height: 32px;
-          font-size: 14px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          background-image: linear-gradient(to right, orange, purple);
-          -webkit-background-clip: text;
-          color: transparent;
-          text-align: center;
+        .search-icon {
+          width: 18px;
+          height:18px;
+          line-height: 18px;
+          background-size: cover;
+          display: inline-block;
+          position: absolute;
           cursor: pointer;
-          margin-left: 1rem;
+          border-radius: 4px;
+          right: 1rem;
+          padding:5px;
+          &:hover{
+            background:silver;
+          }
         }
 
-        .publish {
-          width: 64px;
-          height: 100%;
-          line-height: 32px;
-          background-color: #54b351;
-          color: #ffffff;
-          border: 1px solid transparent;
+        .s-input {
+          flex-grow: 1;
+          -webkit-appearance: none;
+          appearance: none;
+          background-color: #f6f7f8;
           border-radius: 4px;
-          box-sizing: border-box;
-          text-align: center;
-          margin-left: auto;
-          cursor: pointer;
-          position: absolute;
-          right: 0;
+          border: 1px solid #edeff1;
+          box-shadow: none;
+          color: #c1c1c1;
+          display: block;
+          height: 36px;
+          outline: none;
+          width: 100%;
+          text-indent: 1rem;
         }
       }
 
