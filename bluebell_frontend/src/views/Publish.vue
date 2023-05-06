@@ -205,7 +205,7 @@ export default {
       .post-type-options {
         position: absolute;
         width: 100%;
-        background-color: white;
+        background-color: rgb(251, 251, 249);
         left: 0;
         z-index: 9999;
         border-radius: 4px;
