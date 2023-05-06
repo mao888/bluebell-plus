@@ -6,7 +6,6 @@
     </div>
     <div class="btns">
       <div v-show="!isLogin">
-        <a class="publish-btn" @click="goPublish">发表</a>
         <a class="login-btn" @click="goLogin">登录</a>
         <a class="login-btn" @click="goSignUp">注册</a>
       </div>
@@ -48,9 +47,6 @@ export default {
   methods: {
     goIndex() {
       this.$router.push({ name: "Home" });
-    },
-    goPublish() {
-      this.$router.push({ name: "Publish" });
     },
     goLogin() {
       this.$router.push({ name: "Login" });
@@ -105,7 +101,7 @@ export default {
     display: -webkit-flex;
     align-items: center;
 
-    .login-btn ,.publish-btn{
+    .login-btn {
       border: 1px solid transparent;
       border-radius: 4px;
       box-sizing: border-box;

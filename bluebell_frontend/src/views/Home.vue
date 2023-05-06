@@ -17,9 +17,7 @@
             <i class="search-icon el-icon-search" @click="searchPost"></i>
             <input type="text" class="s-input" v-model="keyword" @keydown.enter="searchPost" placeholder="文章搜索" />
           </div>
-          <div class="btn-publish">
-            <!-- <div class="word-of-day" @click="getWordOfDay" :title="wordOfDay">{{ wordOfDay }}</div> -->
-          </div>
+          <div class="publish-btn" @click="goPublish">发表</div>
         </div>
         <ul class="c-l-list">
           <li class="c-l-item" v-for="post in postList" :key="post.post_id">
@@ -84,8 +82,8 @@ export default {
       pageNumber: 1,
       pageSize: 5,
       pageTotal: {},
-      keyword:'',
-      isSearch:false
+      keyword: '',
+      isSearch: false
     };
   },
   methods: {
@@ -95,17 +93,17 @@ export default {
     },
     handleCurrentChange(val) {
       this.pageNumber = val;
-      if(!this.isSearch){
+      if (!this.isSearch) {
         this.getPostList();
-      }else {
+      } else {
         this.searchPost();
       }
     },
     handleSizeChange(val) {
       this.pageSize = val;
-      if(!this.isSearch){
+      if (!this.isSearch) {
         this.getPostList();
-      }else {
+      } else {
         this.searchPost();
       }
     },
@@ -135,6 +133,9 @@ export default {
           console.log(error);
         });
     },
+    goPublish() {
+      this.$router.push({ name: "Publish" });
+    },
     vote(post_id, direction) {
       this.$axios({
         method: "post",
@@ -162,7 +163,7 @@ export default {
         });
     },
     async searchPost() {
-      if(!this.keyword){
+      if (!this.keyword) {
         this.isSearch = false;
         this.getPostList();
         return;
@@ -296,7 +297,7 @@ export default {
 
         .search-icon {
           width: 18px;
-          height:18px;
+          height: 18px;
           line-height: 18px;
           background-size: cover;
           display: inline-block;
@@ -304,9 +305,10 @@ export default {
           cursor: pointer;
           border-radius: 4px;
           right: 1rem;
-          padding:5px;
-          &:hover{
-            background:silver;
+          padding: 5px;
+
+          &:hover {
+            background: silver;
           }
         }
 
@@ -324,6 +326,33 @@ export default {
           outline: none;
           width: 100%;
           text-indent: 1rem;
+        }
+      }
+
+      .publish-btn {
+        width: fit-content;
+        height: fit-content;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        box-sizing: border-box;
+        text-align: center;
+        letter-spacing: 1px;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        line-height: 24px;
+        text-transform: uppercase;
+        padding: 3px 16px;
+        fill: #0079d3;
+        display: inline-block;
+        cursor: pointer;
+        border-color: #0079d3;
+        background: #0079d3;
+        color:#fff;
+
+        &:nth-child(2) {
+          margin: 0 10px;
         }
       }
 
