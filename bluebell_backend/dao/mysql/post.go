@@ -94,3 +94,35 @@ func GetPostList(page, size int64) (posts []*models.Post, err error) {
 	err = db.Select(&posts, sqlStr, (page-1)*size, size)
 	return
 }
+
+// GetPostListByKeywords 根据关键词查询帖子列表
+func GetPostListByKeywords(p *models.ParamPostList) (posts []*models.Post, err error) {
+	// 根据帖子标题或者帖子内容模糊查询帖子列表
+	sqlStr := `select post_id, title, content, author_id, community_id, create_time
+	from post
+	where title like ?
+	or content like ?
+	ORDER BY create_time
+	DESC
+	limit ?,?
+	`
+	// %keyword%
+	p.Search = "%" + p.Search + "%"
+	posts = make([]*models.Post, 0, 2) // 0：长度  2：容量
+	err = db.Select(&posts, sqlStr, p.Search, p.Search, (p.Page-1)*p.Size, p.Size)
+	return
+}
+
+// GetPostListTotalCount 根据关键词查询帖子列表总数
+func GetPostListTotalCount(p *models.ParamPostList) (count int64, err error) {
+	// 根据帖子标题或者帖子内容模糊查询帖子列表总数
+	sqlStr := `select count(post_id)
+	from post
+	where title like ?
+	or content like ?
+	`
+	// %keyword%
+	p.Search = "%" + p.Search + "%"
+	err = db.Get(&count, sqlStr, p.Search, p.Search)
+	return
+}

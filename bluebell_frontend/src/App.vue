@@ -4,7 +4,7 @@
       <HeadBar />
       <router-view />
       <Footer></Footer>
-      <el-backtop ></el-backtop>
+      <el-backtop :right="400" :bottom="150"></el-backtop>
     </div>
   </div>
 </template>
