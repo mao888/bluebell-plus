@@ -13,3 +13,10 @@ type ParamPostList struct {
 	Size        int64  `json:"size" form:"size"`                   // 每页数量
 	Order       string `json:"order" form:"order" example:"score"` // 排序依据
 }
+
+// ParamGithubTrending 获取Github热榜项目query 参数
+type ParamGithubTrending struct {
+	Language int   `json:"language" form:"language"` // 语言 0：All 1：Go 2：Python 3：JavaScript 4：Java
+	Page     int64 `json:"page" form:"page"`         // 页码
+	Size     int64 `json:"size" form:"size"`         // 每页数量
+}
