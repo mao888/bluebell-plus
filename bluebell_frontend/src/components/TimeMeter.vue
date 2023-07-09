@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import { runTime } from "@/utils/runTime"
 export default {
 	name: 'TimeMeter',
 	data() {
@@ -22,9 +23,7 @@ export default {
 	},
 	methods: {
 		init() {
-			let free = new this.Free();
-			// 设置网站运行时间
-			free.dateUtils.runTime({
+			runTime({
 				el: '.run-time',
 				timeStamp: this.runTime.getTime(),
 				desc: '运行时间：'
