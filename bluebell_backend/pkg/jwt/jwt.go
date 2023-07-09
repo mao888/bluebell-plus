@@ -24,9 +24,14 @@ func keyFunc(_ *jwt.Token) (i interface{}, err error) {
 	return mySecret, nil
 }
 
+<<<<<<< HEAD
+// TokenExpireDuration 定义JWT的过期时间
+const TokenExpireDuration = time.Hour * 24
+=======
 // AccessTokenExpireDuration 定义JWT的过期时间
 const AccessTokenExpireDuration = time.Hour * 24      // access_token 过期时间
 const RefreshTokenExpireDuration = time.Hour * 24 * 7 // refresh_token 过期时间
+>>>>>>> de61949ed8a13addae8834d10a435dbbce1e9edd
 
 // GenToken 生成JWT 生成 access_token 和 refresh_token
 func GenToken(userID uint64, username string) (aToken, rToken string, err error) {

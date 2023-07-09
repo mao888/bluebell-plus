@@ -18,14 +18,21 @@
 * [CSDN](https://blog.csdn.net/m0_47214030?spm=1000.2115.3001.5343)
 
 ## 技能清单
-1. gin框架
+1. 雪花算法
+2. gin框架
 2. zap日志库
 3. Viper配置管理
 4. swagger生成文档
 5. JWT认证
 6. 令牌桶限流
-7. Go语言操作MySQL
-8. Go语言操作Redis
+7. Go语言操作MySQL **(sqlx)**
+8. Go语言操作Redis **(go-redis)**
+10. Gihub热榜
+12. Docker部署
+13. Vue框架
+14. ElementUI
+15. axios 
+16. 畅言云评论系统
 
 ## 项目目录结构
 ### 后端结构树
