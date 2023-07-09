@@ -11,7 +11,6 @@
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
     "element-ui": "^2.15.13",
-    "free-min": "^2.1.2",
     "github-markdown-css": "^5.2.0",
     "markdown-it": "^13.0.1",
     "mavon-editor": "^2.10.4",

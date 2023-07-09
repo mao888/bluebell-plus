@@ -5,7 +5,6 @@ import store from './store'
 import axios from './service/api'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-import '../node_modules/free-min/dist/Free'
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 import 'github-markdown-css/github-markdown.css' // 然后添加样式markdown-body
