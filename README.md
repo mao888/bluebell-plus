@@ -41,8 +41,8 @@
 ├── Makefile
 ├── README.md
 ├── bin
-│   ├── bluebell
-│   └── bluebell.conf
+│   ├── bluebell-plus
+│   └── bluebell-plus.conf
 ├── conf
 │   └── config.yaml
 ├── controller
@@ -82,7 +82,7 @@
 ├── go.sum
 ├── init.sql
 ├── log
-│   └── bluebell.log
+│   └── bluebell-plus.log
 ├── logger
 │   └── logger.go
 ├── logic
@@ -142,7 +142,7 @@
 ### 前端结构树
 ```bash
 ├── bin
-│   └── bluebell
+│   └── bluebell-plus
 ├── conf
 │   └── config.yaml
 ├── static

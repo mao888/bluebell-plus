@@ -12,7 +12,7 @@ services:
     command: "--default-authentication-plugin=mysql_native_password --init-file /data/application/init.sql"  # 初始化命令
     environment:
       MYSQL_ROOT_PASSWORD: "root1234"
-      MYSQL_DATABASE: "bluebell"
+      MYSQL_DATABASE: "bluebell-plus"
       MYSQL_PASSWORD: "root1234"
     volumes:
       - ./init.sql:/data/application/init.sql

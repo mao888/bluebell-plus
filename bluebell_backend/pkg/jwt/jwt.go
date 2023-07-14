@@ -18,7 +18,7 @@ type MyClaims struct {
 }
 
 //定义Secret 用于加密的字符串
-var mySecret = []byte("bluebell")
+var mySecret = []byte("bluebell-plus")
 
 func keyFunc(_ *jwt.Token) (i interface{}, err error) {
 	return mySecret, nil
@@ -39,7 +39,7 @@ func GenToken(userID uint64, username string) (aToken, rToken string, err error)
 		username, // 自定义字段
 		jwt.StandardClaims{ // JWT规定的7个官方字段
 			ExpiresAt: time.Now().Add(AccessTokenExpireDuration).Unix(), // 过期时间
-			Issuer:    "bluebell",                                       // 签发人
+			Issuer:    "bluebell-plus",                                  // 签发人
 		},
 	}
 	// 加密并获得完整的编码后的字符串token
@@ -48,7 +48,7 @@ func GenToken(userID uint64, username string) (aToken, rToken string, err error)
 	// refresh token 不需要存任何自定义数据
 	rToken, err = jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
 		ExpiresAt: time.Now().Add(RefreshTokenExpireDuration).Unix(), // 过期时间
-		Issuer:    "bluebell",                                        // 签发人
+		Issuer:    "bluebell-plus",                                   // 签发人
 	}).SignedString(mySecret)
 	// 使用指定的secret签名并获得完整的编码后的字符串token
 	return

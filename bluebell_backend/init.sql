@@ -5,7 +5,7 @@
  Source Server Type    : MySQL
  Source Server Version : 50719
  Source Host           : localhost:3306
- Source Schema         : bluebell
+ Source Schema         : bluebell-plus
 
  Target Server Type    : MySQL
  Target Server Version : 50719

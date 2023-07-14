@@ -12,12 +12,12 @@ import (
 	"time"
 )
 
-func init()  {
+func init() {
 	dbCfg := settings.MySQLConfig{
 		Host:         "127.0.0.1",
 		User:         "root",
 		Password:     "10428376",
-		DB:           "bluebell",
+		DB:           "bluebell-plus",
 		Port:         3306,
 		MaxOpenConns: 10,
 		MaxIdleConns: 10,
@@ -40,7 +40,7 @@ func TestCreatePost(t *testing.T) {
 	}
 	err := CreatePost(&post)
 	if err != nil {
-		t.Fatalf("CreatePost insert record into mysql failed, err:%v\n",err)
+		t.Fatalf("CreatePost insert record into mysql failed, err:%v\n", err)
 	}
 	t.Logf("CreatePost insert record into mysql success")
 }
